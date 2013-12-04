@@ -29,19 +29,23 @@
 	bordercolor="0xFFFFFF"
 	backgroundcolor="0xFFFFFF"
 	selectable="true"
-	/>
+	keep="true"
+	/>                                
 
-
-<data name="htmldata1">
+<data name="htmldata1">                
   <p align="center">
     <font face="times" size="+4">
       <b>Hello from somewhere</b>
-    </font>
+    </font><br/>
   </p>
-  <b>bold</b><br/>
-  <i>italic</i><br/>
-  <u>underlined</u><br/>
-  <br/>
+  <p>
+    <a href="event:action(change_pano_0);">Pano 0</a><br/>
+    <a href="event:action(change_pano_1);">Pano 1</a><br/>
+    <a href="event:action(change_pano_2);">Pano 2</a><br/>
+    <a href="event:action(change_pano_3);">Pano 3</a><br/>
+    <a href="event:action(change_pano_4);">Pano 4</a><br/>
+  </p>
+
 </data>
 
 <data name="cssdata1">
@@ -64,4 +68,23 @@
   set(plugin[in2].ondown, show_table);
 </action>
 
+<action name="change_pano_0">
+  loadpano(virtualtourblank0.xml,NULL,NULL,BLEND(1));
+</action>
+
+<action name="change_pano_1">
+  loadpano(virtualtourblank1.xml,NULL,NULL,BLEND(1));
+</action>
+
+<action name="change_pano_2">
+  loadpano(virtualtourblank2.xml,NULL,NULL,BLEND(1));
+</action>
+
+<action name="change_pano_3">
+  loadpano(virtualtourblank3.xml,NULL,NULL,BLEND(1));
+</action>
+
+<action name="change_pano_4">
+  loadpano(virtualtourblank4.xml,NULL,NULL,BLEND(1));
+</action>
 
