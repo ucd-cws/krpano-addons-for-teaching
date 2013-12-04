@@ -1,0 +1,67 @@
+<!--Currently testing a button-->
+
+<!-- <plugin name="in2" align="bottom" crop="0|0|65|65" height="prop" keep="true" ondown="js(changepano());" onout="" onover="" onovercrop="0|65|65|65" onup="set(fov_moveforce,0);" url="menu0.png" width="40" x="-550" y="10"/> -->
+
+<plugin name="in2" url="menu0.png"
+	align="bottom" 
+	crop="0|0|65|65" 
+	height="prop" 
+	keep="true" 
+	ondown="hide_table();" 
+	onout="" 
+	onover="" 
+	onovercrop="0|65|65|65" 
+	onup="set(fov_moveforce,0);"  
+	width="40" x="-550" y="10"
+	/>
+
+<!-- <plugin name="sometable" align="top" crop="0|0|200|600" height="prop" keep="true" onovercrop="0|0|200|600" url="blank.png" x="-450" y="100"/> -->
+
+<!-- <plugin name="sometable" align="top" crop="0|0|200|600" height="prop" keep="true" onovercrop="0|0|200|600" url="blank.png" x="-450" y="100"/> -->
+
+<plugin name="sometable" url="textfield.swf"
+	origin="center"
+	width="200" height="600"
+	x="-450" y="100"
+	html="data:htmldata1"
+	css="data:cssdata1"
+	borderwidth="1"
+	bordercolor="0xFFFFFF"
+	backgroundcolor="0xFFFFFF"
+	selectable="true"
+	/>
+
+
+<data name="htmldata1">
+  <p align="center">
+    <font face="times" size="+4">
+      <b>Hello from somewhere</b>
+    </font>
+  </p>
+  <b>bold</b><br/>
+  <i>italic</i><br/>
+  <u>underlined</u><br/>
+  <br/>
+</data>
+
+<data name="cssdata1">
+  a { text-decoration:underline; font-weight:bold; }
+  a:hover { color:#885500; }
+</data> 
+
+<!--this particular strap moves with the menu even if "strapp" plugin is NOT specified.-->
+<!-- <plugin name="strapp" keep="true" zorder="0" url="strap.png" x="0" y="200" parent="thumbArray" alpha="0.9" align="right" edge="left" handcursor="true" onclick="slide_action_in"/> -->
+
+<action name="show_table">
+  set(plugin[sometable].visible, true);
+  set(plugin[sometable].enabled, true);
+  set(plugin[in2].ondown, hide_table);
+</action>
+
+<action name="hide_table">
+  set(plugin[sometable].visible, false);
+  set(plugin[sometable].enabled, false);
+  set(plugin[in2].ondown, show_table);
+</action>
+
+
