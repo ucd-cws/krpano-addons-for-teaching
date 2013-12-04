@@ -39,11 +39,11 @@
     </font><br/>
   </p>
   <p>
-    <a href="event:action(change_pano_0);">Pano 0</a><br/>
-    <a href="event:action(change_pano_1);">Pano 1</a><br/>
-    <a href="event:action(change_pano_2);">Pano 2</a><br/>
-    <a href="event:action(change_pano_3);">Pano 3</a><br/>
-    <a href="event:action(change_pano_4);">Pano 4</a><br/>
+    <a href="event:change_pano(0)">Pano 0</a><br/>
+    <a href="event:change_pano(1)">Pano 1</a><br/>
+    <a href="event:change_pano(2)">Pano 2</a><br/>
+    <a href="event:change_pano(3)">Pano 3</a><br/>
+    <a href="event:change_pano(4)">Pano 4</a><br/>
   </p>
 
 </data>
@@ -68,23 +68,8 @@
   set(plugin[in2].ondown, show_table);
 </action>
 
-<action name="change_pano_0">
-  loadpano(virtualtourblank0.xml,NULL,NULL,BLEND(1));
+<action name="change_pano">
+  loadpano(virtualtourblank%1.xml,NULL,NULL,BLEND(1));
 </action>
 
-<action name="change_pano_1">
-  loadpano(virtualtourblank1.xml,NULL,NULL,BLEND(1));
-</action>
-
-<action name="change_pano_2">
-  loadpano(virtualtourblank2.xml,NULL,NULL,BLEND(1));
-</action>
-
-<action name="change_pano_3">
-  loadpano(virtualtourblank3.xml,NULL,NULL,BLEND(1));
-</action>
-
-<action name="change_pano_4">
-  loadpano(virtualtourblank4.xml,NULL,NULL,BLEND(1));
-</action>
 
