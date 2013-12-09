@@ -19,20 +19,21 @@
 
 <!-- <plugin name="sometable" align="top" crop="0|0|200|600" height="prop" keep="true" onovercrop="0|0|200|600" url="blank.png" x="-450" y="100"/> -->
 
-<plugin name="sometable" url="textfield.swf"
-	origin="center"
-	width="200" height="600"
-	x="-450" y="100"
-	html="data:htmldata1"
-	css="data:cssdata1"
-	borderwidth="1"
-	bordercolor="0xFFFFFF"
-	backgroundcolor="0xFFFFFF"
-	selectable="true"
-	keep="true"
-	/>                                
+<!-- <plugin name="sometable" url="textfield.swf" -->
+<!-- 	origin="left" -->
+<!-- 	width="30%" height="100%" -->
+<!-- 	x="0" y="0" -->
+<!-- 	html="data:htmldata1" -->
+<!-- 	css="data:cssdata1" -->
+<!-- 	borderwidth="1" -->
+<!-- 	bordercolor="0xFFFFFF" -->
+<!-- 	backgroundcolor="0xFFFFFF" -->
+<!-- 	selectable="true" -->
+<!-- 	keep="true" -->
+<!-- 	/>   -->                              
 
-<data name="htmldata1">                
+<data name="htmldata1">
+  <div id="leftleft">
   <p align="center">
     <font face="times" size="+4">
       <b>Hello from somewhere</b>
@@ -45,12 +46,13 @@
     <a href="event:change_pano(3)">Pano 3</a><br/>
     <a href="event:change_pano(4)">Pano 4</a><br/>
   </p>
-
+</div>
 </data>
 
 <data name="cssdata1">
   a { text-decoration:underline; font-weight:bold; }
   a:hover { color:#885500; }
+  htmldata1:leftleft {height: 100%; min-height: 100%; width: 85%; margin: 0 auto; float:left;}
 </data> 
 
 <!--this particular strap moves with the menu even if "strapp" plugin is NOT specified.-->
