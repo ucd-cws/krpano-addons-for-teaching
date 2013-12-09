@@ -21,14 +21,3 @@ function changepano(name) {
     var krpano = document.getElementById("krpanoSWFObject");
     krpano.call("loadpano('" + name + ".xml',null,MERGE,BLEND(1));");
 }
-
-function getpanonum(num) {
-    var krpano = document.getElementById("krpanoSWFObject");
-    //some random scene to change to for testing
-    num = num || "0";
-    num = "virtualtourblank" + num;
-    
-    //scene_num + 1 = actual scene numbering based on the .xml file naming
-    var krpano = document.getElementById("krpanoSWFObject");
-    krpano.call("loadpano('" + num + ".xml',null,MERGE,BLEND(1));");
-}

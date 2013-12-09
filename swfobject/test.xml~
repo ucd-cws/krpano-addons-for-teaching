@@ -68,7 +68,6 @@
   set(plugin[in2].ondown, show_table);
 </action>
 
-<!--Loads a specified pano based on given argument -->
 <action name="change_pano">
   loadpano(virtualtourblank%1.xml,NULL,NULL,BLEND(1));
 </action>
