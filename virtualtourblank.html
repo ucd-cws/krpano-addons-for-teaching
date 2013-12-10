@@ -16,24 +16,23 @@
     </style>
   </head>
   <body>
+    <!--Need jQuery loaded before calling jquery functions  -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="swfobject/swfkrpano.js"></script>
     <script src="swfobject/test.js"></script>
 
-    <!--#include file="swfobject/test.xml" -->
     <div id="leftsidepanel">
       Leftside pane.<br>
-      <a href="javascript:void(0);" onclick="getpanonum(0);">Pano 0</a><br/>
-      <a href="javascript:void(0);" onclick="trythis();">Pano 2</a><br/>
+      <a href="javascript:void(0);" onclick="getpanonum(0);">Pano 0</a><br>
+      <a href="javascript:void(0);" onclick="changepano();">Pano 2</a><br>
       Pano 0<br>
       Pano 1<br>
       Pano 2<br>
     </div>
-
-
     <div id="container">
       <div id="panoDIV" style="height:100%;">
         <script>
-          embedpano({target:"panoDIV",swf:"virtualtourblank.swf"});
+          embedpano({target:"panoDIV",swf:"virtualtourblank.swf"});	  
         </script>
         <noscript>
           <div id="tour">

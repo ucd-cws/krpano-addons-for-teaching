@@ -1,0 +1,16 @@
+Possible errors/problems that might occur during the testing phase
+
+-------------------------------------------------------------------------------
+uncaught exception: Error in Actionscript. Use a try/catch block to find error.
+
+   This will prevent any calls to the krpano object
+
+   This usually means that the "Always ask" has been checked. So please check "Always allow"
+   to stop the above error from happening.
+--------------------------------------------------------------------------------
+krpano.set() is not a function
+krpano.call() is not a function
+
+   
+
+
