@@ -19,18 +19,18 @@
 
 <!-- <plugin name="sometable" align="top" crop="0|0|200|600" height="prop" keep="true" onovercrop="0|0|200|600" url="blank.png" x="-450" y="100"/> -->
 
-<!-- <plugin name="sometable" url="textfield.swf" -->
-<!-- 	origin="left" -->
-<!-- 	width="30%" height="100%" -->
-<!-- 	x="0" y="0" -->
-<!-- 	html="data:htmldata1" -->
-<!-- 	css="data:cssdata1" -->
-<!-- 	borderwidth="1" -->
-<!-- 	bordercolor="0xFFFFFF" -->
-<!-- 	backgroundcolor="0xFFFFFF" -->
-<!-- 	selectable="true" -->
-<!-- 	keep="true" -->
-<!-- 	/>   -->                              
+<plugin name="sometable" url="textfield.swf"
+	origin="left"
+	width="30%" height="100%"
+	x="0" y="0"
+	html="data:htmldata1"
+	css="data:cssdata1"
+	borderwidth="1"
+	bordercolor="0xFFFFFF"
+	backgroundcolor="0xFFFFFF"
+	selectable="true"
+	keep="true"
+	/>                              
 
 <data name="htmldata1">
   <div id="leftleft">
@@ -45,6 +45,7 @@
     <a href="event:change_pano(2)">Pano 2</a><br/>
     <a href="event:change_pano(3)">Pano 3</a><br/>
     <a href="event:change_pano(4)">Pano 4</a><br/>
+    xml.url
   </p>
 </div>
 </data>
