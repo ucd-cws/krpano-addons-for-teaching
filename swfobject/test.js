@@ -5,7 +5,29 @@ var count = 0;
 $( document ).ready(function() {
     krpano = document.getElementById("krpanoSWFObject");
     createmorelinks();
+
+    var maxdocwidth = document.body.clientWidth
+
+    $('#leftsidepanel').resizable({
+	handles: 'e',
+	resize: function(event, ui){
+            var currentWidth = ui.size.width;
+            
+            // this accounts for padding in the panels + 
+            // borders, you could calculate this using jQuery
+            var padding = 12; 
+            
+            // this accounts for some lag in the ui.size value, if you take this away 
+            // you'll get some instable behaviour
+            $(this).width(currentWidth);
+            
+            // set the content panel width
+            $('#container').width(maxdocwidth - currentWidth - padding);            
+	}
+    });
+    
 });
+
 
 
 function getpanonum(num) {
