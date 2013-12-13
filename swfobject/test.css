@@ -10,6 +10,7 @@
     width: 15%; 
     margin: 0 auto; 
     float:left;
+    overflow:auto;
 }
 #container { 
     height: 100%; 

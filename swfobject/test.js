@@ -1,11 +1,15 @@
 
 //global variable : krpano initialized when document is ready
-var krpano = undefined;
+//var krpano = undefined;
 var count = 0;
+
 $( document ).ready(function() {
-    krpano = document.getElementById("krpanoSWFObject");
+    //krpano = document.getElementById("krpanoSWFObject");
     createmorelinks();
 
+    $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"callme()\">BLAH</a><br>');
+
+    //below is testing the resizing functionality using jquery
     var maxdocwidth = document.body.clientWidth
 
     $('#leftsidepanel').resizable({
@@ -28,21 +32,28 @@ $( document ).ready(function() {
     
 });
 
+function callme() {
+    krpano().call("change_pano2();");
+}
 
+function krpano() {
+        return document.getElementById('krpanoSWFObject');
+}
 
 function getpanonum(num) {
     //defaults to zeroth pano or sets to specified pano number
     num = "virtualtourblank" + ( num || "0" ) + ".xml";
     
     //scene_num + 1 = actual scene numbering based on the .xml file naming
-    krpano.call("loadpano('" + num + "',null,MERGE,BLEND(1));");
+    krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
 }
 
 //generates all of the links to all of the panos
 function createmorelinks() {
     for( var i = 0; i <= 52; i++) {
-	$( '#leftsidepanel' ).append('<a href=\"javascript:void(0);\" onclick=\"getpanonum(' + i +');\">Pano ' + i +'</a><br>'); 
+	$( '#leftsidepanel' ).append('<a href=\"javascript:void(0);\" onclick=\"getpanonum(' + i +');\">Pano ' + (i + 1) +'</a><br>'); 
     }
+   //TODO : Number of panos is hard-coded
 }
 
 // function loadfile() {
@@ -54,6 +65,7 @@ function createmorelinks() {
 //     });
 // }
 
+//used for testing by terence
 function addtxt(string, location) {
     $( location ).prepend("<p>"+ string + "</p>");
     //$( location ).append("<p>"+ string + "</p>");
