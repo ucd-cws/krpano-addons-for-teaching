@@ -8,9 +8,15 @@ uncaught exception: Error in Actionscript. Use a try/catch block to find error.
    This usually means that the "Always ask" has been checked. So please check "Always allow"
    to stop the above error from happening.
 --------------------------------------------------------------------------------
-krpano.set() is not a function
-krpano.call() is not a function
+krpano.set() is not a function  
+krpano.call() is not a function 
 
-   
+-------------------------------------------------------------------------------   
 
+QUESTIONS + TODO
+
+All hotspots will exist in the exported krpano?
+Will all hotspots be used in a lecture? (I would assume no.)
+After above answered, that means there will need to be some necessary hard-coding to get the positions right.
+Thus another file will be "required" that will setup the hotspot grouping so that we know which thing should go where.
 

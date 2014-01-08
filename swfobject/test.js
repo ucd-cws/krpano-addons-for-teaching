@@ -37,6 +37,11 @@ $( document ).ready(function() {
 
 function testthis() {
     alert(getpanoid());
+    krpano().call("testing();");
+}
+
+function alertme(value) {
+    alert(value);
 }
 
 //uses the name of the file to determine the scene #
