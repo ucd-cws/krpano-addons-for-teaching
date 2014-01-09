@@ -19,3 +19,30 @@
     margin: 0 auto; 
     float:left;
 }
+
+#gotopagetext {
+	width: 50%;
+	height: 20%;
+	float: left;
+}
+
+#gotopagebox {
+	width: 20%;
+	height: 20%;
+	float: left;
+}
+
+#gotopagesubmit {
+	width: 20%;
+	height: 20%;
+	float: left;
+}
+
+a {
+	text-decoration:none;
+}
+
+a:hover {
+	background-color:yellow;
+	color:#000000;
+}

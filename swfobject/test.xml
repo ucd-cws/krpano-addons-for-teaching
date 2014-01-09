@@ -1,7 +1,15 @@
 <!--Currently testing a button-->
 
 <action name="testing" >
-  js(alertme(hotspot));
-  error(get(scene));
 </action>
 
+<action name="whoahotspot">
+  addhotspot("ZOMG NEW HOTSPOT");
+</action>
+
+<action name="draghotspot">
+  if(dragging, 
+	screentosphere(mouse.x,mouse.y,ath,atv);
+	delayedcall(0,draghotspot());
+	);
+</action>
