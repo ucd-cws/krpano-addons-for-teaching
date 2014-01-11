@@ -1,17 +1,14 @@
-
-//global variable : krpano initialized when document is ready
-//var krpano = undefined;
 var count = 0;
 var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
-var panonumber = 1;
+var currentpanonum = 1; //starts with pano 1
 
 $( document ).ready(function() {
     $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
 	createmorelinks();
 
 	//highlights the first pano as always (for now)
-	$('#pano' + panonumber).toggleClass('highlight');
+	$('#pano' + currentpanonum).toggleClass('highlight');
 
 	//this is needed to grab the value from the input box 
     //and change the page number (currently the 1 and 53 are hard coded)
@@ -26,16 +23,19 @@ $( document ).ready(function() {
 		$("#gotopagebox").val(''); //clear value of box
 		return;
 	});
+		
 	checkpanonum();
 	
 });
 
+//constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
-	if(getpanoid() != panonumber) {
+	if(getpanoid() != currentpanonum) {
 		updatepanohighlight(getpanoid());
 	}
 }, 100);
 
+//scrolls to a specified piece of text
 function scrollto(id) {
 	location.hash = "#" + id;
 }
@@ -58,9 +58,6 @@ function getpanoid() {
 		return parseInt(url) + 1;
     }
     return 1;
-
-    // alert(scenelist.toSource());
-    // alert(JSON.stringify(scenelist, null, 4));
 }
 
 function loadpanonum(num) {
@@ -79,17 +76,16 @@ function loadpanonum(num) {
 
 //generates all of the links to all of the panos
 function createmorelinks() {
-
     for( var i = firstpanonum; i <= lastpanonum; i++) {
 		$( '#leftsidepanel' ).append('<a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadpanonum(' + i +');\">Pano ' + i +'</a><br>');
     }
 }
 
 function updatepanohighlight(new_value) {
-	if(panonumber != new_value) {
-		$('#pano' + panonumber).toggleClass('highlight');
+	if(currentpanonum != new_value) {
+		$('#pano' + currentpanonum).toggleClass('highlight');
 		$('#pano' + new_value).toggleClass('highlight');
-		panonumber = new_value; //update global panonumber
-		scrollto("pano"+panonumber);
+		currentpanonum = new_value; //update global currentpanonum
+		scrollto("pano"+currentpanonum);
 	}	
 }

@@ -19,4 +19,4 @@ All hotspots will exist in the exported krpano?
 Will all hotspots be used in a lecture? (I would assume no.)
 After above answered, that means there will need to be some necessary hard-coding to get the positions right.
 Thus another file will be "required" that will setup the hotspot grouping so that we know which thing should go where.
-
+Toggle the visibility of the text? OR Remove and Add new text during scene change/hotspot change?
