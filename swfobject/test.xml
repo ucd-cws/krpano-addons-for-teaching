@@ -1,6 +1,7 @@
 <!--Currently testing a button-->
 
 <action name="testing" >
+  hotspot.name;
 </action>
 
 <action name="whoahotspot">
@@ -13,3 +14,4 @@
 	delayedcall(0,draghotspot());
 	);
 </action>
+

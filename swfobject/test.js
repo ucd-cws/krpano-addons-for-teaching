@@ -5,6 +5,7 @@ var currentpanonum = 1; //starts with pano 1
 
 $( document ).ready(function() {
     $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
+	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"lookat();\">Look at hotspot</a><br>');
 	createmorelinks();
 
 	//highlights the first pano as always (for now)
@@ -35,6 +36,7 @@ var checkpanonum = setInterval(function() {
 	}
 }, 100);
 
+
 //scrolls to a specified piece of text
 function scrollto(id) {
 	location.hash = "#" + id;
@@ -44,9 +46,36 @@ function krpano() {
     return document.getElementById('krpanoSWFObject');
 }
 
+function getallhotspots(panonum) {
+	// var xmlDoc;
+	// var hotspots;
+	// if(typeof DOMParser !== 'undefined') { //Other Browsers
+	// 	xmlDoc = new DOMParser();
+	// 	hotspots = xmlDoc.parseFromString("virtualtourblank2.xml", "application/xml");
+	// 	alert(hotspots.toSource());
+	// }
+	// else { //IE
+	
+	// 	xmlDoc = loadXMLDoc("virtualtourblank2.xml")
+	// 	hotspots = xmlDoc.getElementsByTagName("hotspot");
+	// 	for( var i = 0; i < hotspots.length; i++) {
+	// 		alert(hotspots[i].getAttribute("name"));
+	// 	}
+	// }
+
+
+}
+
+function lookat() {
+	//var hotspotname = "spot3";
+	//krpano().call("looktohotspot(" + hotspotname + ");");
+	getallhotspots(currentpanonum);
+}
+
 function testthis() {
     alert(getpanoid());
     krpano().call("testing();");
+	alert(krpano().call("name"));
 }
 
 //uses the name of the file to determine the scene #
@@ -89,3 +118,15 @@ function updatepanohighlight(new_value) {
 		scrollto("pano"+currentpanonum);
 	}	
 }
+
+function loadjsonfiles(filepath) {
+	//load file
+	var json = loadTextFileAjaxSync(filePath, "application/json");
+	// return parsed json (as an object)
+	return JSON.parse(optionsText);
+}
+
+function displaytext(textobject) {
+	
+}
+

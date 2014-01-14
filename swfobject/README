@@ -20,3 +20,12 @@ Will all hotspots be used in a lecture? (I would assume no.)
 After above answered, that means there will need to be some necessary hard-coding to get the positions right.
 Thus another file will be "required" that will setup the hotspot grouping so that we know which thing should go where.
 Toggle the visibility of the text? OR Remove and Add new text during scene change/hotspot change?
+
+
+TODO (From Nick)
+
+1.  <div> around each block of text </div>
+2.  get pano number, hotspot number and label in "admin mode"
+    i.e. i'm in "admin mode", essentially the virtual tour but has power to mouse over a hotspot and get the info described above.
+    why? it helps with the labeling and setting up the lectures! ;)
+2.1 for above feature to work, need to parse the xml using javascript to access the hotspot node to grab its name and associated .png
