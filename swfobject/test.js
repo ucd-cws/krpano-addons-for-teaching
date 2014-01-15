@@ -2,10 +2,11 @@ var count = 0;
 var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = 1; //starts with pano 1
+var hotspotlist = null;
 
 $( document ).ready(function() {
     $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
-	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"lookat();\">Look at hotspot</a><br>');
+	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br>');
 	createmorelinks();
 
 	//highlights the first pano as always (for now)
@@ -24,15 +25,18 @@ $( document ).ready(function() {
 		$("#gotopagebox").val(''); //clear value of box
 		return;
 	});
-		
+	try{
 	checkpanonum();
-	
+	}
+	catch(e) {}
+	loadxmlfile();
 });
 
 //constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
 	if(getpanoid() != currentpanonum) {
 		updatepanohighlight(getpanoid());
+		hotspotlist = null; //reset hotspotlist
 	}
 }, 100);
 
@@ -46,36 +50,68 @@ function krpano() {
     return document.getElementById('krpanoSWFObject');
 }
 
-function getallhotspots(panonum) {
-	// var xmlDoc;
-	// var hotspots;
-	// if(typeof DOMParser !== 'undefined') { //Other Browsers
-	// 	xmlDoc = new DOMParser();
-	// 	hotspots = xmlDoc.parseFromString("virtualtourblank2.xml", "application/xml");
-	// 	alert(hotspots.toSource());
-	// }
-	// else { //IE
-	
-	// 	xmlDoc = loadXMLDoc("virtualtourblank2.xml")
-	// 	hotspots = xmlDoc.getElementsByTagName("hotspot");
-	// 	for( var i = 0; i < hotspots.length; i++) {
-	// 		alert(hotspots[i].getAttribute("name"));
-	// 	}
-	// }
+// function loadxmlfile()
+// {
+// 	count = 0;
+// 	var xmlhttp;
+// 	if (window.XMLHttpRequest)
+// 	{// code for IE7+, Firefox, Chrome, Opera, Safari
+// 		xmlhttp=new XMLHttpRequest();
+// 	}
+// 	else
+// 	{// code for IE6, IE5
+// 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+// 	}
 
+// 	xmlhttp.open("GET","virtualtourblank2.xml",false);
+// 	xmlhttp.send();
+// 	xmlDoc = xmlhttp.responseXML;
+// 	//get a list of all the tags labeled "hotspot"
+// 	var templist = xmlDoc.getElementsByTagName("hotspot");
+// 	for(var i = 0; i < templist.length; i++) {
+// 		hotspotlist[i] = templist[i].getAttribute("name");
+// 	}
+// }
+
+//jquery version
+function loadxmlfile()
+{
+	count = 0;
+	var jqueryxml = $.ajax({
+		type:"GET",
+		cache: false,
+		url:"virtualtourblank2.xml",
+		dataType: "xml",
+		async:false,
+	});
+
+	var xmlDoc = jqueryxml.responseXML;
+
+	//get a list of all the tags labeled "hotspot"
+	var templist = xmlDoc.getElementsByTagName("hotspot");
+	for(var i = 0; i < templist.length; i++) {
+		hotspotlist[i] = templist[i].getAttribute("name");
+	}
 
 }
 
-function lookat() {
-	//var hotspotname = "spot3";
-	//krpano().call("looktohotspot(" + hotspotname + ");");
-	getallhotspots(currentpanonum);
+function getnexthotspot() {
+	if(!hotspotlist) {
+		hotspotlist = new Array();
+		loadxmlfile();
+	}	
+	lookat(hotspotlist[count]);
+	count++;
+	if(count == hotspotlist.length) count = 0;
+}
+
+function lookat(hotspotname) {
+	krpano().call("looktohotspot(" + hotspotname + ");");
 }
 
 function testthis() {
-    alert(getpanoid());
-    krpano().call("testing();");
-	alert(krpano().call("name"));
+    // alert(getpanoid());
+    // krpano().call("testing();");
 }
 
 //uses the name of the file to determine the scene #
