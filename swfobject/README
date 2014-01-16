@@ -1,3 +1,4 @@
+
 Possible errors/problems that might occur during the testing phase
 
 -------------------------------------------------------------------------------
@@ -29,4 +30,6 @@ TODO (From Nick)
     i.e. i'm in "admin mode", essentially the virtual tour but has power to mouse over a hotspot and get the info described above.
     why? it helps with the labeling and setting up the lectures! ;)
 2.1 for above feature to work, need to parse the xml using javascript to access the hotspot node to grab its name and associated .png
-3. Turn off OpenStreetMap Layer on the Bing Maps. only keep cycle map.
+3. Turn off OpenStreetMap Layer on the Bing Maps. only keep cycle map. (Less of a priority)
+4. Be aware of the memory usage when a lot of people using the pano.
+5. Will need a global highlighting variable.

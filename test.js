@@ -1,8 +1,9 @@
 var count = 0;
+//probably will go back to hard coding these values??
 var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
-var currentpanonum = 1; //starts with pano 1
-var hotspotlist = null;
+var currentpanonum = -1; //starts with pano 1
+var hotspotlist = new Array();
 
 $( document ).ready(function() {
     $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
@@ -26,83 +27,64 @@ $( document ).ready(function() {
 		return;
 	});
 	try{
-	checkpanonum();
+		checkpanonum();
 	}
 	catch(e) {}
-	loadxmlfile();
+	
 });
 
 //constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
-	if(getpanoid() != currentpanonum) {
-		updatepanohighlight(getpanoid());
-		hotspotlist = null; //reset hotspotlist
+	var newpanoid = getpanoid();
+	if(newpanoid != currentpanonum) {
+		updatepanohighlight(newpanoid);
+		currentpanonum = newpanoid;
 	}
-}, 100);
+}, 25);
 
 
 //scrolls to a specified piece of text
 function scrollto(id) {
-	location.hash = "#" + id;
+	//location.hash = "#" + id;
 }
 
 function krpano() {
     return document.getElementById('krpanoSWFObject');
 }
 
-// function loadxmlfile()
-// {
-// 	count = 0;
-// 	var xmlhttp;
-// 	if (window.XMLHttpRequest)
-// 	{// code for IE7+, Firefox, Chrome, Opera, Safari
-// 		xmlhttp=new XMLHttpRequest();
-// 	}
-// 	else
-// 	{// code for IE6, IE5
-// 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-// 	}
-
-// 	xmlhttp.open("GET","virtualtourblank2.xml",false);
-// 	xmlhttp.send();
-// 	xmlDoc = xmlhttp.responseXML;
-// 	//get a list of all the tags labeled "hotspot"
-// 	var templist = xmlDoc.getElementsByTagName("hotspot");
-// 	for(var i = 0; i < templist.length; i++) {
-// 		hotspotlist[i] = templist[i].getAttribute("name");
-// 	}
-// }
-
 //jquery version
 function loadxmlfile()
 {
-	count = 0;
+	var theurl = "virtualtourblank" + (currentpanonum - 1) + ".xml";
 	var jqueryxml = $.ajax({
 		type:"GET",
 		cache: false,
-		url:"virtualtourblank2.xml",
+		url: theurl,
 		dataType: "xml",
 		async:false,
 	});
 
 	var xmlDoc = jqueryxml.responseXML;
-
+	hotspotlist = new Array();
+	//set first value as pano num needed to check for later.
 	//get a list of all the tags labeled "hotspot"
 	var templist = xmlDoc.getElementsByTagName("hotspot");
 	for(var i = 0; i < templist.length; i++) {
 		hotspotlist[i] = templist[i].getAttribute("name");
 	}
+	hotspotlist[templist.length] = currentpanonum;
 
 }
 
 function getnexthotspot() {
-	if(!hotspotlist) {
-		hotspotlist = new Array();
+	if(hotspotlist[hotspotlist.length - 1] != currentpanonum) {
 		loadxmlfile();
-	}	
+		count = 0;
+	}
 	lookat(hotspotlist[count]);
+	$( "#responsedd" ).text( "This is " + hotspotlist[count]);
 	count++;
-	if(count == hotspotlist.length) count = 0;
+	if(count == hotspotlist.length - 1) count = 0;
 }
 
 function lookat(hotspotname) {
@@ -110,15 +92,22 @@ function lookat(hotspotname) {
 }
 
 function testthis() {
-    // alert(getpanoid());
-    // krpano().call("testing();");
+    alert(currentpanonum);
+	var obj = loadjsonfile("swfobject\samplelecture.json");
+	var classdata = new ClassData(obj);
+	classdata.printall();
 }
 
 //uses the name of the file to determine the scene #
 //temporary hack that only works if the file contains its own scene number(integer)
 function getpanoid() { 
-    var url = krpano().get("xml.url");
-    url = url.replace(/\D+/g, ''); //remove all non-digits
+	var url;
+	try {
+		url = krpano().get("xml.url");
+		url = url.replace(/\D+/g, ''); //remove all non-digits
+	}
+	catch (e) {}//krpano has not finished loading yet
+
     if(url) {
 		return parseInt(url) + 1;
     }
@@ -132,7 +121,10 @@ function loadpanonum(num) {
 		num = "virtualtourblank" + (num - 1) + ".xml";
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
-        krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
+		try{
+			krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
+		}
+		catch(e){}
 
 		return true;
     }
@@ -146,23 +138,58 @@ function createmorelinks() {
     }
 }
 
+
+
 function updatepanohighlight(new_value) {
 	if(currentpanonum != new_value) {
 		$('#pano' + currentpanonum).toggleClass('highlight');
 		$('#pano' + new_value).toggleClass('highlight');
-		currentpanonum = new_value; //update global currentpanonum
-		scrollto("pano"+currentpanonum);
+		scrollto("pano"+new_value);
 	}	
 }
 
-function loadjsonfiles(filepath) {
-	//load file
-	var json = loadTextFileAjaxSync(filePath, "application/json");
-	// return parsed json (as an object)
-	return JSON.parse(optionsText);
+function loadjsonfile(filepath) {
+	var jsondata = $.ajax({
+		type:"GET",
+		cache: false,
+		url: "swfobject/samplelecture.json",
+		dataType: "json",
+		async:false,
+	});
+	var jsondat = jsondata.responseText;
+	return jQuery.parseJSON(jsondat); //return the json object
 }
 
-function displaytext(textobject) {
+function ClassData(thedata) {
+	var classdata = this.classdata = thedata.VirtualClass;
+	var locations = this.locations = classdata.locations;
+	//var uses = 1; needed later on to prevent malicious intent?
+
+	var addtopanel = this.addtopanel = function(data) {
+		$( '#leftsidepanel' ).append('<div>'+ data +'</div>');
+	}
+	this.printall = function() {
+		addtopanel(classdata.id);
+		addtopanel(classdata.title);
+		addtopanel(classdata.description);
+		for(var i = 0; i < locations.length; i++) {
+			addtopanel("    " + locations[i].title);
+		}	
+	}
+}
+
+
+
+
+function AdminPanel(user, pass) {
 	
+	//ask for username and password later
+	//generate all of the links along with hotspots as children.
+	var username = admin;
+	var password = cwspass;
+	
+	function checkcredentials() {
+		
+	}
 }
 

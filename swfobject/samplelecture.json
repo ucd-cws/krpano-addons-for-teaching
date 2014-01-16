@@ -1,46 +1,40 @@
 {
-	"Virtual Field Trip Class" : {
-		"id" : "A",
-		"title" : "Introduction",
-		"description" : "None",
-
-		"locations" : [
-			{ 
-				"title" : "Sample Spot 1",
-				"id" : "1",
-				"hotspot" : {
-					"pano number" : "2",
-					"label" : "must be added manually",
-					"id" : "spot2"
-				},
-				"description" : "The grass is green, the river is clear and the sky is blue.",
-				"field of view" : "There must be a way to fetch the coordinates of the views",
-			},
-
-			{ 
-				"title" : "Sample Spot 2",
-				"id" : "2",
-				"hotspot" : {
-					"pano number" : "2",
-					"label" : "must be added manually",
-					"id" : "spot3"
-				},
-				"description" : "The grass is green, the river is clear and the sky is blue.",
-				"field of view" : "There must be a way to fetch the coordinates of the views",
-			},
-
-			{ 
-				"title" : "Sample Spot 3",
-				"id" : "3",
-				"hotspot" : {
-					"pano number" : "2",
-					"label" : "must be added manually",
-					"id" : "spot1"
-				},
-				"description" : "The grass is green, the river is clear and the sky is blue.",
-				"field of view" : "There must be a way to fetch the coordinates of the views",
-			}
-		]
-		
-	}
+    "VirtualClass": {
+        "id": "A",
+        "title": "Introduction",
+        "description": "None",
+        "locations": [
+            {
+                "title": "Sample Spot 1",
+                "id": "1",
+                "hotspot": {
+                    "pano_num": "5",
+                    "label": "must be added manually",
+                    "id": "spot8"
+                },
+                "description": "On the left you see the river with it's tinted brown-ish orange color.",
+                "field of view": "Optional not really necessary"
+            },
+            {
+                "title": "Sample Spot 2",
+                "id": "2",
+                "hotspot": {
+                    "pano_num": "2",
+                    "label": "must be added manually",
+                    "id": "spot3"
+                },
+                "description": "The grass is green, the river is clear and the sky is blue."
+            },
+            {
+                "title": "Sample Spot 3",
+                "id": "3",
+                "hotspot": {
+                    "pano_num": "2",
+                    "label": "must be added manually",
+                    "id": "spot1"
+                },
+                "description": "The grass is green, the river is clear and the sky is blue."
+            }
+        ]
+    }
 }
