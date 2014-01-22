@@ -6,13 +6,17 @@ var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
 
 $( document ).ready(function() {
-    $( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
-	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br>');
+   
 	createmorelinks();
 
-	//highlights the first pano as always (for now)
-	$('#pano' + currentpanonum).toggleClass('highlight');
+	checkforclick();
 
+	test();
+
+	loadjsonfile(getUrlVars());
+});
+
+function checkforclick() {
 	//this is needed to grab the value from the input box 
     //and change the page number (currently the 1 and 53 are hard coded)
 	$( "#gotopageform" ).submit(function( event ) {
@@ -30,8 +34,32 @@ $( document ).ready(function() {
 		checkpanonum();
 	}
 	catch(e) {}
-	
-});
+}
+
+function test() {
+	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
+	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br>');
+}
+
+function testthis() {
+    alert(currentpanonum);
+	var obj = loadjsonfile("swfobject\samplelecture.json");
+	var classdata = new ClassData(obj);
+	classdata.printall();
+}
+
+function getUrlVars() {
+	var $_GET = {};
+	document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+		function decode(s) {
+			return decodeURIComponent(s.split("+").join(" "));
+		}
+
+		$_GET[decode(arguments[1])] = decode(arguments[2]);
+	});
+	return $_GET;
+}
+
 
 //constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
@@ -91,12 +119,7 @@ function lookat(hotspotname) {
 	krpano().call("looktohotspot(" + hotspotname + ");");
 }
 
-function testthis() {
-    alert(currentpanonum);
-	var obj = loadjsonfile("swfobject\samplelecture.json");
-	var classdata = new ClassData(obj);
-	classdata.printall();
-}
+
 
 //uses the name of the file to determine the scene #
 //temporary hack that only works if the file contains its own scene number(integer)
@@ -148,11 +171,22 @@ function updatepanohighlight(new_value) {
 	}	
 }
 
-function loadjsonfile(filepath) {
+function loadjsonfile() {
+	var got = getUrlVars(); 
+	var response = jsonrequest(got["filename"]);
+	if(response) {
+		var classdata = new ClassData(response);
+		classdata.printall();
+	}
+}
+
+function jsonrequest(filename) {
+	if(!filename) return; //no filename received
+	var filepath = "swfobject/" + filename + ".json";
 	var jsondata = $.ajax({
 		type:"GET",
 		cache: false,
-		url: "swfobject/samplelecture.json",
+		url: filepath,
 		dataType: "json",
 		async:false,
 	});
