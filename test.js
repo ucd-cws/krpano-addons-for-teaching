@@ -24,11 +24,18 @@ $( document ).ready(function() {
 	// 	checkpanonum();
 	// }
 	// catch(e) {}
-
+	createleftsidepanel();
 	test();
 
 	loadjsonfile(getUrlVars());
 });
+
+// found code here, not sure why it completely works.
+// http://stackoverflow.com/questions/9114565/jquery-appending-a-div-to-body-the-body-is-the-object
+function createleftsidepanel() {
+	var $div = $('<div />').prependTo('body');
+	$div.attr('id', 'leftsidepanel');
+}
 
 function test() {
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br></div>');
@@ -220,12 +227,12 @@ function ClassData(thedata) {
 									 'onclick=\"loadpanonum(' + number +');\"> '+ name+ '</a></h2>';
 	}
 	var addview = this.addview = function(data, name) {
-		content = content + '<li><h3><a href=\"javascript:void(0);\"' +
-									 'onclick=\"lookat(\'' + name +'\');\">'+ data + '</a></h3></li>';
+		content = content + '<li><a href=\"javascript:void(0);\"' +
+									 'onclick=\"lookat(\'' + name +'\');\">'+ data + '</a></li>';
 	}
 
 	var startol = this.startol = function() {
-		content = content + '<ol>';
+		content = content + '<ol class=\"hotspots\">';
 	}
 	var endol = this.endol = function() {
 		content = content + '</ol>';
