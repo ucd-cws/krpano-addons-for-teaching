@@ -7,38 +7,33 @@ var hotspotlist = new Array();
 
 $( document ).ready(function() {
    
-	createmorelinks();
+	// createmorelinks();
 
-	checkforclick();
+	// $( "#gotopageform" ).submit(function( event ) {
+	// 	var value = parseInt($( "#gotopagebox" ).val());
+	// 	if ( loadpanonum(value) ) {
+	// 	}
+	// 	else {
+	// 		$( "#responsedd" ).text( "Must be " + firstpanonum +" <= n <= " + lastpanonum ).show().fadeOut( 3000 );
+	// 		event.preventDefault();
+	// 	}
+	// 	$("#gotopagebox").val(''); //clear value of box
+	// 	return;
+	// });
+	// try{
+	// 	checkpanonum();
+	// }
+	// catch(e) {}
 
 	test();
 
 	loadjsonfile(getUrlVars());
 });
 
-function checkforclick() {
-	//this is needed to grab the value from the input box 
-    //and change the page number (currently the 1 and 53 are hard coded)
-	$( "#gotopageform" ).submit(function( event ) {
-		var value = parseInt($( "#gotopagebox" ).val());
-		if ( loadpanonum(value) ) {
-		}
-		else {
-			$( "#responsedd" ).text( "Must be " + firstpanonum +" <= n <= " + lastpanonum ).show().fadeOut( 3000 );
-			event.preventDefault();
-		}
-		$("#gotopagebox").val(''); //clear value of box
-		return;
-	});
-	try{
-		checkpanonum();
-	}
-	catch(e) {}
-}
-
 function test() {
-	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br>');
-	$( '#leftsidepanel' ).prepend('<a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br></div>');
+	$( '#leftsidepanel' ).append('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 }
 
 function testthis() {
@@ -48,6 +43,7 @@ function testthis() {
 	classdata.printall();
 }
 
+// http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
 function getUrlVars() {
 	var $_GET = {};
 	document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
@@ -157,7 +153,7 @@ function loadpanonum(num) {
 //generates all of the links to all of the panos
 function createmorelinks() {
     for( var i = firstpanonum; i <= lastpanonum; i++) {
-		$( '#leftsidepanel' ).append('<a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadpanonum(' + i +');\">Pano ' + i +'</a><br>');
+		$( '#leftsidepanel' ).append('<div><a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadpanonum(' + i +');\">Pano ' + i +'</a><br></div>');
     }
 }
 
@@ -198,17 +194,64 @@ function ClassData(thedata) {
 	var classdata = this.classdata = thedata.VirtualClass;
 	var locations = this.locations = classdata.locations;
 	//var uses = 1; needed later on to prevent malicious intent?
+	var content = this.content = "";
 
-	var addtopanel = this.addtopanel = function(data) {
-		$( '#leftsidepanel' ).append('<div>'+ data +'</div>');
+	var addcontent = this.addcontent = function() {
+		$( '#leftsidepanel' ).append(content);
 	}
+
+	var startdiv = this.startdiv = function() {
+		content = content + '<div>';
+	}
+	var enddiv = this.enddiv = function() {
+		content = content + '</div>';
+	}
+	var addtitle = this.addtitle = function(title) {
+		content = content + '<h1>'+ title +'</h1>';
+	}
+	var adddescription = this.adddescription = function(description) {
+		content = content + '<p>'+ description +'</p>';
+	}
+	//essentially a startdiv() with an id.
+	var addstartpano = this.addpano = function(name, number) {
+		var pano = "pano" + number;
+		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">' +
+									 '<h2><a href=\"javascript:void(0);\"' + 
+									 'onclick=\"loadpanonum(' + number +');\"> '+ name+ '</a></h2>';
+	}
+	var addview = this.addview = function(data, name) {
+		content = content + '<li><h3><a href=\"javascript:void(0);\"' +
+									 'onclick=\"lookat(\'' + name +'\');\">'+ data + '</a></h3></li>';
+	}
+
+	var startol = this.startol = function() {
+		content = content + '<ol>';
+	}
+	var endol = this.endol = function() {
+		content = content + '</ol>';
+	}
+
+	//public function that will print the data onto the left panel
 	this.printall = function() {
-		addtopanel(classdata.id);
-		addtopanel(classdata.title);
-		addtopanel(classdata.description);
+		//startdiv();
+		//addtopanel(classdata.id);
+		//addtitle( classdata.id );
+		addtitle( classdata.title );
+		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
-			addtopanel("    " + locations[i].title);
-		}	
+			addstartpano(locations[i].title, locations[i].pano_num);
+			adddescription(locations[i].description);
+			var hotspots = locations[i].hotspots;
+			startol();
+			for(var j = 0; j < hotspots.length; j++) {
+				addview(hotspots[j].display_id + ". " + 
+						hotspots[j].label, hotspots[j].id);
+			}
+			endol();
+			enddiv();
+		}
+		addcontent();
+		//enddiv();
 	}
 }
 

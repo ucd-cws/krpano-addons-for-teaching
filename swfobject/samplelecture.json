@@ -1,39 +1,121 @@
 {
     "VirtualClass": {
-        "id": "A",
-        "title": "Introduction",
-        "description": "None",
+        "id": "ClassA",
+        "title": "Introduction to Meadow Geomorphology",
+        "description": "In this tour, you'll see from the ground level in Tuolumne Meadows the geomorphic processes driving change in a living meadow. Topics of interest include remnant channels, bank cuts, and sediment transport.",
         "locations": [
             {
-                "title": "Sample Spot 1",
-                "id": "1",
-                "hotspot": {
-                    "pano_num": "5",
-                    "label": "must be added manually",
-                    "id": "spot8"
-                },
-                "description": "On the left you see the river with it's tinted brown-ish orange color.",
-                "field of view": "Optional not really necessary"
+                "title": "Lembert Dome",
+                "pano_num": 52,
+                "thumbnail": null,
+                "hotspots": [
+                    {
+                        "label": "River Trail",
+                        "icon": "video_media",
+                        "id": "spot119",
+                        "display_id": "A1"
+                    },
+                    {
+                        "label": "Pothole Dome",
+                        "icon": "video_media",
+                        "id": "spot120",
+                        "display_id": "A2"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
             },
             {
-                "title": "Sample Spot 2",
-                "id": "2",
-                "hotspot": {
-                    "pano_num": "2",
-                    "label": "must be added manually",
-                    "id": "spot3"
-                },
-                "description": "The grass is green, the river is clear and the sky is blue."
+                "title": "Gravel Bars I",
+                "pano_num": 10,
+                "thumbnail": null,
+                "hotspots": [
+                    {
+                        "label": "Bank Cut",
+                        "icon": "water_drop",
+                        "id": "spot5",
+                        "display_id": "A3"
+                    }
+                ],
+                "description": "This stop includes a view of excellent midchannel gravel bars. One can wade across the river here"
             },
             {
-                "title": "Sample Spot 3",
-                "id": "3",
-                "hotspot": {
-                    "pano_num": "2",
-                    "label": "must be added manually",
-                    "id": "spot1"
-                },
-                "description": "The grass is green, the river is clear and the sky is blue."
+                "title": "Bank Cut I",
+                "pano_num": 12,
+                "thumbnail": null,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
+            },
+            {
+                "title": "Remnant Channels",
+                "pano_num": 18,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
+            },
+            {
+                "title": "Bank Cut II",
+                "pano_num": 23,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
+            },
+            {
+                "title": "Meadow Processes",
+                "pano_num": 28,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
+            },
+            {
+                "title": "Gravel Bars II",
+                "pano_num": 31,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
+            },
+            {
+                "title": "The final corner",
+                "pano_num": 35,
+                "hotspots": [
+                    {
+                        "label": "Processes",
+                        "icon": "video_media",
+                        "id": "spot8",
+                        "display_id": "A1"
+                    }
+                ],
+                "description": "Lembert Dome provides a bird's eye view of the whole meadow complex."
             }
         ]
     }
