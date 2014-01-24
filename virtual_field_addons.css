@@ -1,17 +1,60 @@
 #leftsidepanel {
-    height: 100%;
-    min-height: 100%;
-    width: 0%;
-    margin: 0 auto;
+    height: 98%; 
+    min-height: 98%; 
+    width: 18%; 
+    margin: 0; 
+	padding: 1%;
     float:left;
     overflow:auto;
+	font-family: Arial, Helvetica, sans-serif;
 }
-#container {
-    height: 100%;
-    min-height: 100%;
-    width: 100%;
-    margin: 0 auto;
+
+#container { 
+    height: 100%; 
+    min-height: 100%; 
+    width: 80%; 
+    margin: 0 auto; 
     float:left;
+}
+
+#leftsidepanel h1{
+	font-variant: small-caps;
+	font-size:1.5em;
+}
+
+#leftsidepanel p{
+	font-size: .9em;
+}
+
+#leftsidepanel p#introduction{
+	margin-bottom: 1em;
+}
+
+#leftsidepanel div.pano_stop{
+	border-top: 1px solid black;
+}
+
+#leftsidepanel div.pano_stop h2 a{
+	padding: 1em 5%;
+}
+
+#leftsidepanel div.pano_stop p{
+	padding: 0 5% 1em 5%;
+}
+#leftsidepanel h2{
+	font-size: 1.25em;
+}
+
+#leftsidepanel h2 a{
+	color: #555;
+	display:block;
+	width: 90%;
+	
+}
+
+#leftsidepanel div.pano_stop ol.hotspots{
+	padding-left: 2em;
+	padding-bottom: 1em;
 }
 
 #gotopagetext {
@@ -37,9 +80,10 @@ a {
 }
 
 a:hover {
-	background-color:yellow;
+	background-color:#ccc;
 	color:#000000;
 }
+
 
 
 .highlight {
@@ -47,5 +91,5 @@ a:hover {
 }
 
 .selected {
-	background-color:#FFA500;
+	background-color:#cdb;
 }
