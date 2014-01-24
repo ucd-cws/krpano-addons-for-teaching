@@ -1,13 +1,7 @@
-/* #parentContainer { */
-/*     height: 100%;  */
-/*     min-height: 100%; */
-/*     width: 100%; */
-/*     margin: 0 auto; */
-/* } */
 #leftsidepanel { 
     height: 100%; 
     min-height: 100%; 
-    width: 15%; 
+    width: 20%; 
     margin: 0 auto; 
     float:left;
     overflow:auto;
@@ -15,7 +9,7 @@
 #container { 
     height: 100%; 
     min-height: 100%; 
-    width: 85%; 
+    width: 80%; 
     margin: 0 auto; 
     float:left;
 }
@@ -49,5 +43,9 @@ a:hover {
 
 
 .highlight {
-	background-color:yellow;
+	background-color:green;
+}
+
+.selected {
+	background-color:#FFA500;
 }

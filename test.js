@@ -9,25 +9,12 @@ $( document ).ready(function() {
    
 	// createmorelinks();
 
-	// $( "#gotopageform" ).submit(function( event ) {
-	// 	var value = parseInt($( "#gotopagebox" ).val());
-	// 	if ( loadpanonum(value) ) {
-	// 	}
-	// 	else {
-	// 		$( "#responsedd" ).text( "Must be " + firstpanonum +" <= n <= " + lastpanonum ).show().fadeOut( 3000 );
-	// 		event.preventDefault();
-	// 	}
-	// 	$("#gotopagebox").val(''); //clear value of box
-	// 	return;
-	// });
-	// try{
-	// 	checkpanonum();
-	// }
-	// catch(e) {}
 	createleftsidepanel();
 	test();
 
 	loadjsonfile(getUrlVars());
+	hideall();
+	showallheaders();
 });
 
 // found code here, not sure why it completely works.
@@ -45,10 +32,8 @@ function test() {
 
 function testthis() {
     alert(currentpanonum);
-	var obj = loadjsonfile("swfobject\samplelecture.json");
-	var classdata = new ClassData(obj);
-	classdata.printall();
 }
+
 
 // http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
 function getUrlVars() {
@@ -68,11 +53,41 @@ function getUrlVars() {
 var checkpanonum = setInterval(function() {
 	var newpanoid = getpanoid();
 	if(newpanoid != currentpanonum) {
-		updatepanohighlight(newpanoid);
 		currentpanonum = newpanoid;
+		showcurrenttext();
 	}
-}, 25);
+}, 15);
 
+function showcurrenttext() {
+	// var $this = $("#pano" + currentpanonum);
+	// //show everything in selected div
+	// $this.addClass('selected').children().show();
+	// //hide everything other than the selected div
+	// $this.siblings(".pano_stop").removeClass('selected').children().hide();
+	// //show only the headers (titles) of the selected div's siblings
+	// $this.siblings(".pano_stop").children('h2').show();
+
+	unselectall();
+	hideall();
+	showallheaders();
+	$("#pano" + currentpanonum).addClass('selected').children().show();
+}
+
+function unselectall() {
+	$(".pano_stop").removeClass('selected');
+}
+
+function showall() {
+	$(".pano_stop").children().show();
+}
+
+function hideall() {
+	$(".pano_stop").children().hide();
+}
+
+function showallheaders() {
+	$(".pano_stop").children('h2').show();
+}
 
 //scrolls to a specified piece of text
 function scrollto(id) {
@@ -143,7 +158,7 @@ function getpanoid() {
 function loadpanonum(num) {
     //defaults to zeroth pano or sets to specified pano number
 	if( firstpanonum <= num && num <= lastpanonum) {
-		updatepanohighlight(num);
+		//updatepanohighlight(num);
 		num = "virtualtourblank" + (num - 1) + ".xml";
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
