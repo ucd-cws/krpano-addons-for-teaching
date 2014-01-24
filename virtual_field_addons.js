@@ -8,12 +8,14 @@ var hotspotlist = new Array();
 $( document ).ready(function() {
    
 	// createmorelinks();
-
-	var response = loadJSONFile(getUrlVars());
+	var urlinfo = getUrlVars();
+	var response = loadJSONFile(urlinfo);
 	//file has been found and loaded
 	if(response) {
 		createLeftSidePanel();
-		//test();
+		//enabling debugmode
+		if(urlinfo["debug"] == 1)
+		   debug();
 		var classdata = new ClassData(response);
 		classdata.printAll();
 	}
@@ -26,12 +28,12 @@ $( document ).ready(function() {
 function createLeftSidePanel() {
 	var $div = $('<div />').prependTo('body');
 	$div.attr('id', 'leftsidepanel');
-	$('#leftsidepanel').css("width", "20%");
-	$('#container').css("width","80%");
+	// $('#leftsidepanel').css("width", "20%");
+	// $('#container').css("width","80%");
 	//change the width of left panel div and the pano's div
 }
 
-function test() {
+function debug() {
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
 	$( '#leftsidepanel' ).append('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
@@ -49,12 +51,10 @@ function getUrlVars() {
 		function decode(s) {
 			return decodeURIComponent(s.split("+").join(" "));
 		}
-
 		$_GET[decode(arguments[1])] = decode(arguments[2]);
 	});
 	return $_GET;
 }
-
 
 //constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
@@ -65,19 +65,7 @@ var checkpanonum = setInterval(function() {
 	}
 }, 15);
 
-function setTitle(newtitle) {
-	document.att('title' , newtitle);
-}
-
 function showCurrentText() {
-	// var $this = $("#pano" + currentpanonum);
-	// //show everything in selected div
-	// $this.addClass('selected').children().show();
-	// //hide everything other than the selected div
-	// $this.siblings(".pano_stop").removeClass('selected').children().hide();
-	// //show only the headers (titles) of the selected div's siblings
-	// $this.siblings(".pano_stop").children('h2').show();
-
 	unselectAll();
 	hideAll();
 	showAllHeaders();
@@ -98,11 +86,6 @@ function hideAll() {
 
 function showAllHeaders() {
 	$(".pano_stop").children('h2').show();
-}
-
-//scrolls to a specified piece of text
-function scrollTo(id) {
-	//location.hash = "#" + id;
 }
 
 function krpano() {
@@ -169,7 +152,6 @@ function getPanoID() {
 function loadPanoNum(num) {
     //defaults to zeroth pano or sets to specified pano number
 	if( firstpanonum <= num && num <= lastpanonum) {
-		//updatepanohighlight(num);
 		num = "virtualtourblank" + (num - 1) + ".xml";
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
@@ -190,22 +172,8 @@ function createMoreLinks() {
     }
 }
 
-
-
-function updatePanoHighlight(new_value) {
-	if(currentpanonum != new_value) {
-		$('#pano' + currentpanonum).toggleClass('highlight');
-		$('#pano' + new_value).toggleClass('highlight');
-		scrollto("pano"+new_value);
-	}	
-}
-
-function loadJSONFile() {
-	var got = getUrlVars(); 
-    return jsonRequest(got["lecture"]);
-}
-
-function jsonRequest(filename) {
+function loadJSONFile(got) {
+    var filename = got["lecture"];
 	if(!filename) return; //no filename received
 	var filepath = "lectures/" + filename + ".json";
 	var jsondata = $.ajax({
@@ -238,6 +206,9 @@ function ClassData(thedata) {
 	var addtitle = this.addtitle = function(title) {
 		content = content + '<h1>'+ title +'</h1>';
 	}
+	var settitle = this.settitle = function(title) {
+		$('head > title').text(title);
+	}
 	var adddescription = this.adddescription = function(description) {
 		content = content + '<p id = \"introduction\">'+ description +'</p>';
 	}
@@ -265,6 +236,7 @@ function ClassData(thedata) {
 		//startdiv();
 		//addtopanel(classdata.id);
 		//addtitle( classdata.id );
+		settitle( classdata.title );
 		addtitle( classdata.title );
 		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
@@ -283,19 +255,3 @@ function ClassData(thedata) {
 		//enddiv();
 	}
 }
-
-
-
-
-function AdminPanel(user, pass) {
-	
-	//ask for username and password later
-	//generate all of the links along with hotspots as children.
-	var username = admin;
-	var password = cwspass;
-	
-	function checkcredentials() {
-		
-	}
-}
-
