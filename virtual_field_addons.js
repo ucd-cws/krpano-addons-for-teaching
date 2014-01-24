@@ -9,28 +9,35 @@ $( document ).ready(function() {
    
 	// createmorelinks();
 
-	createleftsidepanel();
-	test();
-
-	loadjsonfile(getUrlVars());
-	hideall();
-	showallheaders();
+	var response = loadJSONFile(getUrlVars());
+	//file has been found and loaded
+	if(response) {
+		createLeftSidePanel();
+		//test();
+		var classdata = new ClassData(response);
+		classdata.printAll();
+	}
+	hideAll();
+	showAllHeaders();
 });
 
 // found code here, not sure why it completely works.
 // http://stackoverflow.com/questions/9114565/jquery-appending-a-div-to-body-the-body-is-the-object
-function createleftsidepanel() {
+function createLeftSidePanel() {
 	var $div = $('<div />').prependTo('body');
 	$div.attr('id', 'leftsidepanel');
+	$('#leftsidepanel').css("width", "20%");
+	$('#container').css("width","80%");
+	//change the width of left panel div and the pano's div
 }
 
 function test() {
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testthis();\">show number</a><br></div>');
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getnexthotspot();\">Look at hotspot</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
 	$( '#leftsidepanel' ).append('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 }
 
-function testthis() {
+function testThis() {
     alert(currentpanonum);
 }
 
@@ -51,14 +58,18 @@ function getUrlVars() {
 
 //constantly checks current panonumber and updates it
 var checkpanonum = setInterval(function() {
-	var newpanoid = getpanoid();
+	var newpanoid = getPanoID();
 	if(newpanoid != currentpanonum) {
 		currentpanonum = newpanoid;
-		showcurrenttext();
+		showCurrentText();
 	}
 }, 15);
 
-function showcurrenttext() {
+function setTitle(newtitle) {
+	document.att('title' , newtitle);
+}
+
+function showCurrentText() {
 	// var $this = $("#pano" + currentpanonum);
 	// //show everything in selected div
 	// $this.addClass('selected').children().show();
@@ -67,30 +78,30 @@ function showcurrenttext() {
 	// //show only the headers (titles) of the selected div's siblings
 	// $this.siblings(".pano_stop").children('h2').show();
 
-	unselectall();
-	hideall();
-	showallheaders();
+	unselectAll();
+	hideAll();
+	showAllHeaders();
 	$("#pano" + currentpanonum).addClass('selected').children().show();
 }
 
-function unselectall() {
+function unselectAll() {
 	$(".pano_stop").removeClass('selected');
 }
 
-function showall() {
+function showAll() {
 	$(".pano_stop").children().show();
 }
 
-function hideall() {
+function hideAll() {
 	$(".pano_stop").children().hide();
 }
 
-function showallheaders() {
+function showAllHeaders() {
 	$(".pano_stop").children('h2').show();
 }
 
 //scrolls to a specified piece of text
-function scrollto(id) {
+function scrollTo(id) {
 	//location.hash = "#" + id;
 }
 
@@ -99,7 +110,7 @@ function krpano() {
 }
 
 //jquery version
-function loadxmlfile()
+function loadXMLFile()
 {
 	var theurl = "virtualtourblank" + (currentpanonum - 1) + ".xml";
 	var jqueryxml = $.ajax({
@@ -122,18 +133,18 @@ function loadxmlfile()
 
 }
 
-function getnexthotspot() {
+function getNextHotspot() {
 	if(hotspotlist[hotspotlist.length - 1] != currentpanonum) {
-		loadxmlfile();
+		loadXMLFile();
 		count = 0;
 	}
-	lookat(hotspotlist[count]);
+	lookAt(hotspotlist[count]);
 	$( "#responsedd" ).text( "This is " + hotspotlist[count]);
 	count++;
 	if(count == hotspotlist.length - 1) count = 0;
 }
 
-function lookat(hotspotname) {
+function lookAt(hotspotname) {
 	krpano().call("looktohotspot(" + hotspotname + ");");
 }
 
@@ -141,7 +152,7 @@ function lookat(hotspotname) {
 
 //uses the name of the file to determine the scene #
 //temporary hack that only works if the file contains its own scene number(integer)
-function getpanoid() { 
+function getPanoID() { 
 	var url;
 	try {
 		url = krpano().get("xml.url");
@@ -155,7 +166,7 @@ function getpanoid() {
     return 1;
 }
 
-function loadpanonum(num) {
+function loadPanoNum(num) {
     //defaults to zeroth pano or sets to specified pano number
 	if( firstpanonum <= num && num <= lastpanonum) {
 		//updatepanohighlight(num);
@@ -173,15 +184,15 @@ function loadpanonum(num) {
 }
 
 //generates all of the links to all of the panos
-function createmorelinks() {
+function createMoreLinks() {
     for( var i = firstpanonum; i <= lastpanonum; i++) {
-		$( '#leftsidepanel' ).append('<div><a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadpanonum(' + i +');\">Pano ' + i +'</a><br></div>');
+		$( '#leftsidepanel' ).append('<div><a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadPanoNum(' + i +');\">Pano ' + i +'</a><br></div>');
     }
 }
 
 
 
-function updatepanohighlight(new_value) {
+function updatePanoHighlight(new_value) {
 	if(currentpanonum != new_value) {
 		$('#pano' + currentpanonum).toggleClass('highlight');
 		$('#pano' + new_value).toggleClass('highlight');
@@ -189,18 +200,14 @@ function updatepanohighlight(new_value) {
 	}	
 }
 
-function loadjsonfile() {
+function loadJSONFile() {
 	var got = getUrlVars(); 
-	var response = jsonrequest(got["filename"]);
-	if(response) {
-		var classdata = new ClassData(response);
-		classdata.printall();
-	}
+    return jsonRequest(got["lecture"]);
 }
 
-function jsonrequest(filename) {
+function jsonRequest(filename) {
 	if(!filename) return; //no filename received
-	var filepath = "swfobject/" + filename + ".json";
+	var filepath = "lectures/" + filename + ".json";
 	var jsondata = $.ajax({
 		type:"GET",
 		cache: false,
@@ -232,18 +239,18 @@ function ClassData(thedata) {
 		content = content + '<h1>'+ title +'</h1>';
 	}
 	var adddescription = this.adddescription = function(description) {
-		content = content + '<p>'+ description +'</p>';
+		content = content + '<p id = \"introduction\">'+ description +'</p>';
 	}
 	//essentially a startdiv() with an id.
 	var addstartpano = this.addpano = function(name, number) {
 		var pano = "pano" + number;
 		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">' +
 									 '<h2><a href=\"javascript:void(0);\"' + 
-									 'onclick=\"loadpanonum(' + number +');\"> '+ name+ '</a></h2>';
+									 'onclick=\"loadPanoNum(' + number +');\"> '+ name+ '</a></h2>';
 	}
 	var addview = this.addview = function(data, name) {
 		content = content + '<li><a href=\"javascript:void(0);\"' +
-									 'onclick=\"lookat(\'' + name +'\');\">'+ data + '</a></li>';
+									 'onclick=\"lookAt(\'' + name +'\');\">'+ data + '</a></li>';
 	}
 
 	var startol = this.startol = function() {
@@ -254,7 +261,7 @@ function ClassData(thedata) {
 	}
 
 	//public function that will print the data onto the left panel
-	this.printall = function() {
+	this.printAll = function() {
 		//startdiv();
 		//addtopanel(classdata.id);
 		//addtitle( classdata.id );
