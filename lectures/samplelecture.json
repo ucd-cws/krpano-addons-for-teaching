@@ -11,13 +11,13 @@
                 "hotspots": [
                     {
                         "label": "River Trail",
-                        "icon": "video_media",
-                        "id": "spot119",
+                        "icon": "video",
+                        "id": "spot118",
                         "display_id": "A1"
                     },
                     {
                         "label": "Pothole Dome",
-                        "icon": "video_media",
+                        "icon": "video",
                         "id": "spot120",
                         "display_id": "A2"
                     }
@@ -31,7 +31,7 @@
                 "hotspots": [
                     {
                         "label": "Bank Cut",
-                        "icon": "water_drop",
+                        "icon": "water",
                         "id": "spot5",
                         "display_id": "A3"
                     }
@@ -45,7 +45,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "video",
                         "id": "spot8",
                         "display_id": "A1"
                     }
@@ -58,7 +58,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "audio",
                         "id": "spot8",
                         "display_id": "A1"
                     }
@@ -71,7 +71,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "images",
                         "id": "spot8",
                         "display_id": "A1"
                     }
@@ -84,7 +84,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "text",
                         "id": "spot8",
                         "display_id": "A1"
                     }
@@ -97,7 +97,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "video",
                         "id": "spot8",
                         "display_id": "A1"
                     }
@@ -110,7 +110,7 @@
                 "hotspots": [
                     {
                         "label": "Processes",
-                        "icon": "video_media",
+                        "icon": "audio",
                         "id": "spot8",
                         "display_id": "A1"
                     }

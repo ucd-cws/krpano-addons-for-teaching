@@ -49,7 +49,11 @@
 	color: #555;
 	display:block;
 	width: 90%;
-	
+}
+
+#leftsidepanel h2 a img.thumbnail{
+	position:relative;
+	float: right;
 }
 
 #leftsidepanel div.pano_stop ol.hotspots{
@@ -75,6 +79,15 @@
 	float: left;
 }
 
+.thumbnail {
+	height: 25px;
+	width: 40px;
+}
+
+.droplet {
+	
+}
+
 a {
 	text-decoration:none;
 }
@@ -92,4 +105,28 @@ a:hover {
 
 .selected {
 	background-color:#cdb;
+}
+
+.icons {
+	background:url("icons/icons.png");
+	width:16px;
+	height:16px;
+	position:relative;
+	float: right;
+}
+
+.icons.video {
+	background-position: 0px 0px;
+}
+
+.icons.audio {
+	background-position: 0px -26px;
+}
+
+.icons.images {
+	background-position: 0px -78px;
+}
+
+.icons.text {
+	background-position: 0px -104px;
 }

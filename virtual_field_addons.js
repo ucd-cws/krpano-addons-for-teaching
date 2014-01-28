@@ -18,9 +18,10 @@ $( document ).ready(function() {
 		   debug();
 		var classdata = new ClassData(response);
 		classdata.printAll();
+		hideAll();
+		showAllHeaders();
 	}
-	hideAll();
-	showAllHeaders();
+	//credits(); //make this small and as a footer
 });
 
 // found code here, not sure why it completely works.
@@ -121,16 +122,42 @@ function getNextHotspot() {
 		loadXMLFile();
 		count = 0;
 	}
-	lookAt(hotspotlist[count]);
+	lookToHotspot(hotspotlist[count]);
 	$( "#responsedd" ).text( "This is " + hotspotlist[count]);
 	count++;
 	if(count == hotspotlist.length - 1) count = 0;
 }
 
-function lookAt(hotspotname) {
+function lookToHotspot(hotspotname) {
 	krpano().call("looktohotspot(" + hotspotname + ");");
 }
 
+function lookAt() {
+}
+
+function getlookat()
+{
+	var krpano = krpano();
+	if (krpano && krpano.get) // it can take some time until krpano is loaded and ready
+	{
+		var mousex = krpano.get("mouse.x");
+		var mousey = krpano.get("mouse.y");
+		if (mousex && mousey) // wait also for the jsmouse plugin
+		{
+			var hvs = krpano.get("screentosphere("+mousex +","+mousey +")");
+			var hva = hvs.split(",");
+			var ath = Number( hva[0] );
+			var atv = Number( hva[1] );
+
+			values["mouse_x"] = mousex;
+			values["mouse_y"] = mousey;
+			values["mouse_ath"] = ath.toFixed(2);
+			values["mouse_atv"] = atv.toFixed(2);
+		}
+	}
+
+	//display them immediately.
+} 
 
 
 //uses the name of the file to determine the scene #
@@ -151,8 +178,8 @@ function getPanoID() {
 
 function loadPanoNum(num) {
     //defaults to zeroth pano or sets to specified pano number
-	if( firstpanonum <= num && num <= lastpanonum) {
-		num = "virtualtourblank" + (num - 1) + ".xml";
+	if( firstpanonum <= num && num <= lastpanonum) { //this may not be necessary.
+		num = "virtualtourblank" + (num - 1) + ".xml"; //filename will be a variable in the json file.
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
 		try{
@@ -163,6 +190,17 @@ function loadPanoNum(num) {
 		return true;
     }
 	return false;
+}
+
+function loadThumbNail(num) {
+	if( firstpanonum <= num && num <= lastpanonum) {
+		num = "virtualtourblankdata/graphics/virtualtourblank" + num + "_thumbnail.jpg";
+		$( '#leftsidepanel' ).append('<img class="thumbnail" src=\"' + num + '\">'); 
+	}
+}
+
+function loadIcon(name){
+	
 }
 
 //generates all of the links to all of the panos
@@ -212,16 +250,37 @@ function ClassData(thedata) {
 	var adddescription = this.adddescription = function(description) {
 		content = content + '<p id = \"introduction\">'+ description +'</p>';
 	}
-	//essentially a startdiv() with an id.
-	var addstartpano = this.addpano = function(name, number) {
+	//essentially a startdiv() with an id. needs an enddiv()
+	var addspotname = this.addpano = function(name, number) {
 		var pano = "pano" + number;
-		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">' +
-									 '<h2><a href=\"javascript:void(0);\"' + 
-									 'onclick=\"loadPanoNum(' + number +');\"> '+ name+ '</a></h2>';
+		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">';
+		starth2();
+
+		content = content + '<a href=\"javascript:void(0);\"' + 
+			                'onclick=\"loadPanoNum(' + number +');\"> '+ name;
+		addthumbnail(number);
+		content = content + '</a>';
+		endh2();
 	}
+	var starth2 = function() {
+		content = content + '<h2>';
+	}
+	var endh2 = function() {
+		content = content + '</h2>';
+	}
+	var addthumbnail = this.addthumbnail = function(num) {
+		//needs to perform some checking because not all thumbnails exist.
+		var name = "virtualtourblankdata/graphics/virtualtourblank" + (num - 1) + "_thumbnail.jpg";
+		content = content + '<img class="thumbnail" src=\"' + name + '\">'; 
+	}
+
 	var addview = this.addview = function(data, name) {
-		content = content + '<li><a href=\"javascript:void(0);\"' +
-									 'onclick=\"lookAt(\'' + name +'\');\">'+ data + '</a></li>';
+		content = content + '<a href=\"javascript:void(0);\"' +
+									 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
+	}
+
+	var addicon = this.addicon = function(name) {
+		content = content + '<div class=\"icons ' + name + '\"></div>'; 
 	}
 
 	var startol = this.startol = function() {
@@ -230,28 +289,39 @@ function ClassData(thedata) {
 	var endol = this.endol = function() {
 		content = content + '</ol>';
 	}
+	var startil = this.startil = function() {
+		content = content + '<il class=\"hotspots\">';
+	}
+	var endil = this.endil = function() {
+		content = content + '</il>';
+	}
 
 	//public function that will print the data onto the left panel
 	this.printAll = function() {
-		//startdiv();
-		//addtopanel(classdata.id);
-		//addtitle( classdata.id );
 		settitle( classdata.title );
 		addtitle( classdata.title );
 		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
-			addstartpano(locations[i].title, locations[i].pano_num);
+			addspotname(locations[i].title, locations[i].pano_num);
 			adddescription(locations[i].description);
 			var hotspots = locations[i].hotspots;
 			startol();
 			for(var j = 0; j < hotspots.length; j++) {
+				startil();
 				addview(hotspots[j].display_id + ". " + 
 						hotspots[j].label, hotspots[j].id);
+				addicon(hotspots[j].icon);
+				endil();
 			}
 			endol();
 			enddiv();
 		}
 		addcontent();
-		//enddiv();
 	}
+}
+
+function credits() {
+	//crediting to where we got the icons.
+	$('#leftsidepanel').append('<div class="credits"><a href=\"http://www.famfamfam.com/lab/icons/silk/\">Icons: Silk by FAMFAMFAM </a></div>');
+	
 }
