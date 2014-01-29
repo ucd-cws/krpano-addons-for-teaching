@@ -1,0 +1,344 @@
+{
+    "VirtualClass": {
+        "id": "ClassA",
+        "title": "Watershed Form and Function",
+        "description": "An overview of the geomorphic processes and features that occur at a watershed-scale.",
+		"enable_thumbnails" : true,
+		"enable_icons" : true,
+        "locations": [
+            {
+                "title": "What is a Watershed?",
+                "pano_num": 52,
+                "hotspots": [
+                    {
+                        "label": "Definition",
+                        "icon": "video",
+                        "id": "spot118",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Identification",
+                        "icon": "text",
+                        "id": "spot120",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Meadow formation",
+                        "icon": "video",
+                        "id": "spot120",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "The Watershed Scientist",
+                "pano_num": 15,
+                "hotspots": [
+                    {
+                        "label": "Disciplinary perspective",
+                        "icon": "video",
+                        "id": "spot5",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Questions",
+                        "icon": "text",
+                        "id": "spot5",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Nested Heirarchies",
+                "pano_num": 19,
+                "hotspots": [
+                    {
+                        "label": "Spatial scales",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Geomorphic scale",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Hydraulic scale",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Stream Community Ecology",
+                "pano_num": 23,
+                "hotspots": [
+                    {
+                        "label": "Succession and food webs",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Riparian succession",
+                        "icon": "photo",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Meadow dwellers",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Principles of Geomorphology",
+                "pano_num": 24,
+                "hotspots": [
+                    {
+                        "label": "5 principles",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Past disturbances",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Watershed Form & Function",
+                "pano_num": 53,
+                "hotspots": [
+                    {
+                        "label": "Pattern and process",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Sediment supply",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Glacial influence",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Watershed Form - Metrics",
+                "pano_num": 28,
+                "hotspots": [
+                    {
+                        "label": "Drainage patters and density",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Basin Metrics",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Tuolumne patterns",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "watershed Function - Zones",
+                "pano_num": 30,
+                "hotspots": [
+                    {
+                        "label": "Process zones",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Sediment sources",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Watershed Function - Equilibrium",
+                "pano_num": 31,
+                "hotspots": [
+                    {
+                        "label": "Dynamic equilibrium",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Tuolumne river",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Watershed Function - Scales",
+                "pano_num": 32,
+                "hotspots": [
+                    {
+                        "label": "Spatial and temporal scales",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Disturbance",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Flow Regime",
+                "pano_num": 36,
+                "hotspots": [
+                    {
+                        "label": "Natural flow regime",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Tuolumne baseflow",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Groundwater table",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "C"
+                    },
+                    {
+                        "label": "Meadow climate",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "D"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Sediment Supply",
+                "pano_num": 38,
+                "hotspots": [
+                    {
+                        "label": "Production, supply, yield",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Production zone",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Sediment Supply versus Transport Capacity",
+                "pano_num": 39,
+                "hotspots": [
+                    {
+                        "label": "Supply-capacity relationship",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Tuolumne river",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Channel Pattern and Process",
+                "pano_num": 43,
+                "hotspots": [
+                    {
+                        "label": "Channel types",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Tuolumne channel type",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    },
+                    {
+                        "label": "Tributary inputs",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "C"
+                    }
+                ],
+                "description": ""
+            },
+            {
+                "title": "Channel Reach Classifications",
+                "pano_num": 51,
+                "hotspots": [
+                    {
+                        "label": "Reach types",
+                        "icon": "video",
+                        "id": "spot8",
+                        "display_id": "A"
+                    },
+                    {
+                        "label": "Tuolumne reaches",
+                        "icon": "text",
+                        "id": "spot8",
+                        "display_id": "B"
+                    }
+                ],
+                "description": ""
+            }
+		]
+    }
+}

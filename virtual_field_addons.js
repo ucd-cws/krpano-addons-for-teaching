@@ -258,7 +258,8 @@ function ClassData(thedata) {
 
 		content = content + '<a href=\"javascript:void(0);\"' + 
 			                'onclick=\"loadPanoNum(' + number +');\"> '+ name;
-		addthumbnail(number);
+		if(classdata.enable_thumbnails)
+			addthumbnail(number);
 		content = content + '</a>';
 		endh2();
 	}
@@ -283,17 +284,17 @@ function ClassData(thedata) {
 		content = content + '<div class=\"icons ' + name + '\"></div>'; 
 	}
 
-	var startol = this.startol = function() {
-		content = content + '<ol class=\"hotspots\">';
+	var startul = this.startul = function() {
+		content = content + '<ul class=\"hotspots\">';
 	}
-	var endol = this.endol = function() {
-		content = content + '</ol>';
+	var endul = this.endul = function() {
+		content = content + '</ul>';
 	}
-	var startil = this.startil = function() {
-		content = content + '<il class=\"hotspots\">';
+	var startli = this.startli = function() {
+		content = content + '<li class=\"hotspots\">';
 	}
-	var endil = this.endil = function() {
-		content = content + '</il>';
+	var endli = this.endli = function() {
+		content = content + '</li>';
 	}
 
 	//public function that will print the data onto the left panel
@@ -303,17 +304,19 @@ function ClassData(thedata) {
 		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
 			addspotname(locations[i].title, locations[i].pano_num);
-			adddescription(locations[i].description);
+			//adddescription(locations[i].description);
 			var hotspots = locations[i].hotspots;
-			startol();
+			startul();
 			for(var j = 0; j < hotspots.length; j++) {
-				startil();
+				startli();
 				addview(hotspots[j].display_id + ". " + 
 						hotspots[j].label, hotspots[j].id);
-				addicon(hotspots[j].icon);
-				endil();
+				if(classdata.enable_icons) {
+					addicon(hotspots[j].icon);
+				}
+				endli();
 			}
-			endol();
+			endul();
 			enddiv();
 		}
 		addcontent();

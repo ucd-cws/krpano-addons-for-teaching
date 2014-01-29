@@ -130,3 +130,16 @@ a:hover {
 .icons.text {
 	background-position: 0px -104px;
 }
+
+ul {
+	list-style-type: none;
+	margin-left: 1em;
+}
+
+.pano_stop {
+	padding-bottom: 1em;
+}
+
+.pano_stop ul li {
+	margin-bottom: .5em;
+}
