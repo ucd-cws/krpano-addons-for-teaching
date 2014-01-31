@@ -3,6 +3,7 @@
         "id": "ClassA",
         "title": "Watershed Form and Function",
         "description": "An overview of the geomorphic processes and features that occur at a watershed-scale.",
+		"class_icon" : "water",
 		"enable_thumbnails" : true,
 		"enable_icons" : true,
         "locations": [
@@ -51,7 +52,7 @@
                 "description": ""
             },
             {
-                "title": "Nested Heirarchies",
+                "title": "Nested Hierarchies",
                 "pano_num": 19,
                 "hotspots": [
                     {
@@ -149,7 +150,7 @@
                 "pano_num": 28,
                 "hotspots": [
                     {
-                        "label": "Drainage patters and density",
+                        "label": "Drainage patterns and density",
                         "icon": "video",
                         "id": "spot8",
                         "display_id": "A"
@@ -170,7 +171,7 @@
                 "description": ""
             },
             {
-                "title": "watershed Function - Zones",
+                "title": "Watershed Function - Zones",
                 "pano_num": 30,
                 "hotspots": [
                     {

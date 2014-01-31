@@ -131,6 +131,32 @@ a:hover {
 	background-position: 0px -104px;
 }
 
+.lectureicon {
+	width: 40px;
+	height: 40px;
+	position: relative;
+	float: right;
+}
+
+/* .lectures { */
+/* 	background: url("icons/lectureicons.png"); */
+/* 	width: 100px; */
+/* 	height: 100px; */
+/* 	/\* float: left; *\/ */
+/* 	/\* position: relative; *\/ */
+/* } */
+
+/* .lectures.fish { */
+/* 	background-position: 0px 0px; */
+/* } */
+
+/* .lectures.grass { */
+/* 	background-position: 0px -178px; */
+/* } */
+/* .lectures.water { */
+/* 	background-position: 0px -358px; */
+/* } */
+
 ul {
 	list-style-type: none;
 	margin-left: 1em;

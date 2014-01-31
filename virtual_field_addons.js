@@ -18,10 +18,15 @@ $( document ).ready(function() {
 		   debug();
 		var classdata = new ClassData(response);
 		classdata.printAll();
-		hideAll();
-		showAllHeaders();
+	    hideAll();
+	    showAllHeaders();
+		// loadPanoNum(classdata.getfirstlocation());
+		// showCurrentText();
 	}
+	//click on the first link
+
 	//credits(); //make this small and as a footer
+	//$(".pano_stop > h2 > a").first().click();
 });
 
 // found code here, not sure why it completely works.
@@ -32,6 +37,10 @@ function createLeftSidePanel() {
 	// $('#leftsidepanel').css("width", "20%");
 	// $('#container').css("width","80%");
 	//change the width of left panel div and the pano's div
+}
+
+function loadstart() {
+	loadPanoNum(52);
 }
 
 function debug() {
@@ -284,6 +293,12 @@ function ClassData(thedata) {
 		content = content + '<div class=\"icons ' + name + '\"></div>'; 
 	}
 
+	var addlectureicon = this.addlectureicon = function(name) {
+		//content = content + '<div class=\"lectures ' + name + '\"></div>';
+		var location = "icons/" + name + ".png";
+		content = content + '<img class=\"lectureicon\" src=\"' + location  + '\">'
+	}
+
 	var startul = this.startul = function() {
 		content = content + '<ul class=\"hotspots\">';
 	}
@@ -301,6 +316,7 @@ function ClassData(thedata) {
 	this.printAll = function() {
 		settitle( classdata.title );
 		addtitle( classdata.title );
+		addlectureicon(classdata.class_icon);
 		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
 			addspotname(locations[i].title, locations[i].pano_num);
@@ -320,6 +336,10 @@ function ClassData(thedata) {
 			enddiv();
 		}
 		addcontent();
+	}
+
+	this.getfirstlocation = function() {
+		return(locations[0].pano_num);
 	}
 }
 
