@@ -20,7 +20,7 @@ $( document ).ready(function() {
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
-		// loadPanoNum(classdata.getfirstlocation());
+		loadPanoNum(classdata.getfirstlocation());
 		// showCurrentText();
 	}
 	//click on the first link
@@ -37,10 +37,6 @@ function createLeftSidePanel() {
 	// $('#leftsidepanel').css("width", "20%");
 	// $('#container').css("width","80%");
 	//change the width of left panel div and the pano's div
-}
-
-function loadstart() {
-	loadPanoNum(52);
 }
 
 function debug() {
@@ -194,7 +190,7 @@ function loadPanoNum(num) {
 		try{
 			krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
 		}
-		catch(e){}
+		catch(e){console.log("couldn't load pano number " + num);}
 
 		return true;
     }
@@ -263,17 +259,20 @@ function ClassData(thedata) {
 	var addspotname = this.addpano = function(name, number) {
 		var pano = "pano" + number;
 		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">';
-		starth2();
+		starth2(number);
 
 		content = content + '<a href=\"javascript:void(0);\"' + 
-			                'onclick=\"loadPanoNum(' + number +');\"> '+ name;
+			                'onclick=\"loadPanoNum(' + number +');\"><span class="hotspot_name">'+ name +'</span>';
 		if(classdata.enable_thumbnails)
 			addthumbnail(number);
 		content = content + '</a>';
 		endh2();
 	}
-	var starth2 = function() {
-		content = content + '<h2>';
+	var starth2 = function(number) {
+		//if(classdata.enable_thumbnails)
+		//	content = content + '<h2 class="has_thumb" style="background-image:url(\'virtualtourblankdata/graphics/virtualtourblank' + (number - 1) + '_thumbnail.jpg\');background-size:100%;">';
+		//else
+			content = content + '<h2>';
 	}
 	var endh2 = function() {
 		content = content + '</h2>';
@@ -290,7 +289,7 @@ function ClassData(thedata) {
 	}
 
 	var addicon = this.addicon = function(name) {
-		content = content + '<div class=\"icons ' + name + '\"></div>'; 
+		content = content + '<span class=\"icons ' + name + '\"></span>'; 
 	}
 
 	var addlectureicon = this.addlectureicon = function(name) {

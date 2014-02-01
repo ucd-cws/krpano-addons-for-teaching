@@ -4,7 +4,7 @@
         "title": "Watershed Form and Function",
         "description": "An overview of the geomorphic processes and features that occur at a watershed-scale.",
 		"class_icon" : "water",
-		"enable_thumbnails" : true,
+		"enable_thumbnails" : false,
 		"enable_icons" : true,
         "locations": [
             {

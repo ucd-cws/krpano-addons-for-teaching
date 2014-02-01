@@ -32,10 +32,16 @@
 
 #leftsidepanel div.pano_stop{
 	border-top: 1px solid black;
+	padding-bottom: 0;
 }
 
 #leftsidepanel div.pano_stop h2 a{
 	padding: 1em 5%;
+	/*text-shadow: 2px 2px #fff;*/
+}
+
+#leftsidepanel div.pano_stop h2.has_thumb a{
+	background-color: rgba(255,255,255,.8);
 }
 
 #leftsidepanel div.pano_stop p{
@@ -54,6 +60,9 @@
 #leftsidepanel h2 a img.thumbnail{
 	position:relative;
 	float: right;
+	height: 25px;
+	width: 40px;
+	vertical-align: bottom;
 }
 
 #leftsidepanel div.pano_stop ol.hotspots{
@@ -79,15 +88,6 @@
 	float: left;
 }
 
-.thumbnail {
-	height: 25px;
-	width: 40px;
-}
-
-.droplet {
-	
-}
-
 a {
 	text-decoration:none;
 }
@@ -97,17 +97,16 @@ a:hover {
 	color:#000000;
 }
 
-
-
 .highlight {
 	background-color:green;
 }
 
-.selected {
+#leftsidepanel .pano_stop.selected {
 	background-color:#cdb;
+	padding-bottom: 1em;
 }
 
-.icons {
+span.icons {
 	background:url("icons/icons.png");
 	width:16px;
 	height:16px;
@@ -115,19 +114,19 @@ a:hover {
 	float: right;
 }
 
-.icons.video {
+span.icons.video {
 	background-position: 0px 0px;
 }
 
-.icons.audio {
+span.icons.audio {
 	background-position: 0px -26px;
 }
 
-.icons.images {
+span.icons.images {
 	background-position: 0px -78px;
 }
 
-.icons.text {
+span.icons.text {
 	background-position: 0px -104px;
 }
 
@@ -136,6 +135,7 @@ a:hover {
 	height: 40px;
 	position: relative;
 	float: right;
+	vertical-align: bottom;
 }
 
 /* .lectures { */
