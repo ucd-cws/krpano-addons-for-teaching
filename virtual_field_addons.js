@@ -11,44 +11,110 @@ $( document ).ready(function() {
 	var urlinfo = getUrlVars();
 	var response = loadJSONFile(urlinfo);
 	//file has been found and loaded
+	if(urlinfo["debug"] == 1) {
+		createLeftSidePanel();
+		debug();
+	}
 	if(response) {
 		createLeftSidePanel();
 		//enabling debugmode
-		if(urlinfo["debug"] == 1)
-		   debug();
+
 		var classdata = new ClassData(response);
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
 		loadPanoNum(classdata.getfirstlocation());
 		// showCurrentText();
+		credits(); //make this small and as a footer
 	}
 	//click on the first link
 
-	//credits(); //make this small and as a footer
+
 	//$(".pano_stop > h2 > a").first().click();
 });
 
-// found code here, not sure why it completely works.
-// http://stackoverflow.com/questions/9114565/jquery-appending-a-div-to-body-the-body-is-the-object
-function createLeftSidePanel() {
-	var $div = $('<div />').prependTo('body');
-	$div.attr('id', 'leftsidepanel');
-	// $('#leftsidepanel').css("width", "20%");
-	// $('#container').css("width","80%");
-	//change the width of left panel div and the pano's div
-}
 
+
+//==============================START DEBUG CODE ==================================//
 function debug() {
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
 	$( '#leftsidepanel' ).append('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
+
+	setupmousepos();
+	setInterval('updatemousepos()', 66);
+	
+}
+
+function getNextHotspot() {
+	if(hotspotlist[hotspotlist.length - 1] != currentpanonum) {
+		loadXMLFile();
+		count = 0;
+	}
+	lookToHotspot(hotspotlist[count]);
+	$( "#responsedd" ).text( "This is " + hotspotlist[count]);
+	count++;
+	if(count == hotspotlist.length - 1) count = 0;
 }
 
 function testThis() {
     alert(currentpanonum);
 }
 
+//generates all of the links to all of the panos
+function createMoreLinks() {
+    for( var i = firstpanonum; i <= lastpanonum; i++) {
+		$( '#leftsidepanel' ).append('<div><a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadPanoNum(' + i +');\">Pano ' + i +'</a><br></div>');
+    }
+}
+
+function setupmousepos() {
+	$('#leftsidepanel').append('<div id=\"mousex\"><\div>');
+	$('#leftsidepanel').append('<div id=\"mousey\"><\div>');
+	$('#leftsidepanel').append('<div id=\"mouseath\"><\div>');
+	$('#leftsidepanel').append('<div id=\"mouseatv\"><\div>');
+	$('#leftsidepanel').append('<div id=\"fieldofview\"><\div>');
+}
+
+function updatemousepos()
+{
+	var values = new Array();
+	if (krpano() && krpano().get) // it can take some time until krpano is loaded and ready
+	{
+		var mousex = krpano().get("mouse.x");
+		var mousey = krpano().get("mouse.y");
+		var fov = krpano().get("view.fov");
+		if (mousex && mousey) // wait also for the jsmouse plugin
+		{
+			var hvs = krpano().get("screentosphere("+mousex +","+mousey +")");
+			var hva = hvs.split(",");
+			var ath = Number( hva[0] );
+			var atv = Number( hva[1] );
+
+			values["mouse_x"] = mousex;
+			values["mouse_y"] = mousey;
+			values["mouse_ath"] = ath.toFixed(2);
+			values["mouse_atv"] = atv.toFixed(2);
+
+			$('#mousex').text("mouse_x = " + values["mouse_x"]);
+			$('#mousey').text("mouse_y = " + values["mouse_y"]);
+			$('#mouseath').text("mouse_ath = " + values["mouse_ath"]);
+			$('#mouseatv').text("mouse_atv = " + values["mouse_atv"]);
+			$('#fieldofview').text("fov = " + fov);
+		}
+	}
+
+	//display them immediately.
+} 
+
+//=============================END OF DEBUG CODE======================================//
+
+// found code here, not sure why it completely works.
+// http://stackoverflow.com/questions/9114565/jquery-appending-a-div-to-body-the-body-is-the-object
+function createLeftSidePanel() {
+	var $div = $('<div />').prependTo('body');
+	$div.attr('id', 'leftsidepanel');
+}
 
 // http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
 function getUrlVars() {
@@ -70,6 +136,8 @@ var checkpanonum = setInterval(function() {
 		showCurrentText();
 	}
 }, 15);
+
+//========================TEXT VISUAL MANIPULATION=======================
 
 function showCurrentText() {
 	unselectAll();
@@ -93,9 +161,16 @@ function hideAll() {
 function showAllHeaders() {
 	$(".pano_stop").children('h2').show();
 }
+//====================END OF TEXT VISUAL MANIPULATION=================
 
 function krpano() {
     return document.getElementById('krpanoSWFObject');
+}
+
+function credits() {
+	//crediting to where we got the icons.
+	$('#leftsidepanel').append('<div id="credits"></div>');
+	$('#credits').append('<a href=\"http://www.famfamfam.com/lab/icons/silk/\">Icons: Silk by FAMFAMFAM </a>')
 }
 
 //jquery version
@@ -122,47 +197,25 @@ function loadXMLFile()
 
 }
 
-function getNextHotspot() {
-	if(hotspotlist[hotspotlist.length - 1] != currentpanonum) {
-		loadXMLFile();
-		count = 0;
-	}
-	lookToHotspot(hotspotlist[count]);
-	$( "#responsedd" ).text( "This is " + hotspotlist[count]);
-	count++;
-	if(count == hotspotlist.length - 1) count = 0;
+function loadJSONFile(got) {
+    var filename = got["lecture"];
+	if(!filename) return; //no filename received
+	var filepath = "lectures/" + filename + ".json";
+	var jsondata = $.ajax({
+		type:"GET",
+		cache: false,
+		url: filepath,
+		dataType: "json",
+		async:false,
+	});
+	var jsondat = jsondata.responseText;
+	return jQuery.parseJSON(jsondat); //return the json object
 }
+
 
 function lookToHotspot(hotspotname) {
 	krpano().call("looktohotspot(" + hotspotname + ");");
 }
-
-function lookAt() {
-}
-
-function getlookat()
-{
-	var krpano = krpano();
-	if (krpano && krpano.get) // it can take some time until krpano is loaded and ready
-	{
-		var mousex = krpano.get("mouse.x");
-		var mousey = krpano.get("mouse.y");
-		if (mousex && mousey) // wait also for the jsmouse plugin
-		{
-			var hvs = krpano.get("screentosphere("+mousex +","+mousey +")");
-			var hva = hvs.split(",");
-			var ath = Number( hva[0] );
-			var atv = Number( hva[1] );
-
-			values["mouse_x"] = mousex;
-			values["mouse_y"] = mousey;
-			values["mouse_ath"] = ath.toFixed(2);
-			values["mouse_atv"] = atv.toFixed(2);
-		}
-	}
-
-	//display them immediately.
-} 
 
 
 //uses the name of the file to determine the scene #
@@ -195,39 +248,6 @@ function loadPanoNum(num) {
 		return true;
     }
 	return false;
-}
-
-function loadThumbNail(num) {
-	if( firstpanonum <= num && num <= lastpanonum) {
-		num = "virtualtourblankdata/graphics/virtualtourblank" + num + "_thumbnail.jpg";
-		$( '#leftsidepanel' ).append('<img class="thumbnail" src=\"' + num + '\">'); 
-	}
-}
-
-function loadIcon(name){
-	
-}
-
-//generates all of the links to all of the panos
-function createMoreLinks() {
-    for( var i = firstpanonum; i <= lastpanonum; i++) {
-		$( '#leftsidepanel' ).append('<div><a id=\"' + "pano" + i + '\" href=\"javascript:void(0);\" onclick=\"loadPanoNum(' + i +');\">Pano ' + i +'</a><br></div>');
-    }
-}
-
-function loadJSONFile(got) {
-    var filename = got["lecture"];
-	if(!filename) return; //no filename received
-	var filepath = "lectures/" + filename + ".json";
-	var jsondata = $.ajax({
-		type:"GET",
-		cache: false,
-		url: filepath,
-		dataType: "json",
-		async:false,
-	});
-	var jsondat = jsondata.responseText;
-	return jQuery.parseJSON(jsondat); //return the json object
 }
 
 function ClassData(thedata) {
@@ -342,8 +362,3 @@ function ClassData(thedata) {
 	}
 }
 
-function credits() {
-	//crediting to where we got the icons.
-	$('#leftsidepanel').append('<div class="credits"><a href=\"http://www.famfamfam.com/lab/icons/silk/\">Icons: Silk by FAMFAMFAM </a></div>');
-	
-}

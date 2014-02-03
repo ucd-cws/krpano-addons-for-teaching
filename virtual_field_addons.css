@@ -169,3 +169,9 @@ ul {
 .pano_stop ul li {
 	margin-bottom: .5em;
 }
+
+#credits {
+	font-size: 10px;
+	padding-top: 5em;
+	padding-bottom: 2em;
+}
