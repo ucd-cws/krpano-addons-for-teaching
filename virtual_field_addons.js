@@ -4,17 +4,16 @@ var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
+var name = "";
 
 $( document ).ready(function() {
    
+	name = getFileName();
 	// createmorelinks();
 	var urlinfo = getUrlVars();
 	var response = loadJSONFile(urlinfo);
 	//file has been found and loaded
-	if(urlinfo["debug"] == 1) {
-		createLeftSidePanel();
-		debug();
-	}
+
 	if(response) {
 		createLeftSidePanel();
 		//enabling debugmode
@@ -23,26 +22,33 @@ $( document ).ready(function() {
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
-		loadPanoNum(classdata.getfirstlocation());
+		//trying to load the very first one!!!
+		//loadPanoNum(classdata.getfirstlocation());
 		// showCurrentText();
 		credits(); //make this small and as a footer
 	}
-	//click on the first link
-
-
-	//$(".pano_stop > h2 > a").first().click();
+	if(urlinfo["debug"] == 1) {
+		if($('#leftsidepanel').length == 0) {
+			createLeftSidePanel();
+		}
+		debug();
+	}
+	
 });
 
 
 
 //==============================START DEBUG CODE ==================================//
 function debug() {
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
-	$( '#leftsidepanel' ).append('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
-
 	setupmousepos();
 	setInterval('updatemousepos()', 66);
+
+	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
+
+
+
 	
 }
 
@@ -69,11 +75,11 @@ function createMoreLinks() {
 }
 
 function setupmousepos() {
-	$('#leftsidepanel').append('<div id=\"mousex\"><\div>');
-	$('#leftsidepanel').append('<div id=\"mousey\"><\div>');
-	$('#leftsidepanel').append('<div id=\"mouseath\"><\div>');
-	$('#leftsidepanel').append('<div id=\"mouseatv\"><\div>');
-	$('#leftsidepanel').append('<div id=\"fieldofview\"><\div>');
+	$('#leftsidepanel').prepend('<div id=\"fieldofview\"><\div>');
+	$('#leftsidepanel').prepend('<div id=\"mouseatv\"><\div>');
+	$('#leftsidepanel').prepend('<div id=\"mouseath\"><\div>');
+	$('#leftsidepanel').prepend('<div id=\"mousey\"><\div>');
+	$('#leftsidepanel').prepend('<div id=\"mousex\"><\div>');
 }
 
 function updatemousepos()
@@ -173,10 +179,17 @@ function credits() {
 	$('#credits').append('<a href=\"http://www.famfamfam.com/lab/icons/silk/\">Icons: Silk by FAMFAMFAM </a>')
 }
 
+function getFileName() {
+	var myname = location.pathname;
+	myname = myname.replace('/', '');
+	myname = myname.replace('.html', '');
+	return myname;
+}
+
 //jquery version
 function loadXMLFile()
 {
-	var theurl = "virtualtourblank" + (currentpanonum - 1) + ".xml";
+	var theurl = name + (currentpanonum - 1) + ".xml";
 	var jqueryxml = $.ajax({
 		type:"GET",
 		cache: false,
@@ -189,6 +202,7 @@ function loadXMLFile()
 	hotspotlist = new Array();
 	//set first value as pano num needed to check for later.
 	//get a list of all the tags labeled "hotspot"
+	//TODO: need a try and catch here to prevent odd crashes.
 	var templist = xmlDoc.getElementsByTagName("hotspot");
 	for(var i = 0; i < templist.length; i++) {
 		hotspotlist[i] = templist[i].getAttribute("name");
@@ -220,7 +234,7 @@ function lookToHotspot(hotspotname) {
 
 //uses the name of the file to determine the scene #
 //temporary hack that only works if the file contains its own scene number(integer)
-function getPanoID() { 
+function getPanoID2() { 
 	var url;
 	try {
 		url = krpano().get("xml.url");
@@ -233,11 +247,25 @@ function getPanoID() {
     }
     return 1;
 }
+function getPanoID() { 
+	var url;
+	try {
+		url = krpano().get("xml.url");
+		url = url.replace(name, ''); //remove the name
+		url = url.replace(".html", ''); //remove the .html
+	}
+	catch (e) {}//krpano has not finished loading yet
+
+    if(url) {
+		return parseInt(url) + 1;
+    }
+    return 1;
+}
 
 function loadPanoNum(num) {
     //defaults to zeroth pano or sets to specified pano number
 	if( firstpanonum <= num && num <= lastpanonum) { //this may not be necessary.
-		num = "virtualtourblank" + (num - 1) + ".xml"; //filename will be a variable in the json file.
+		num = name + (num - 1) + ".xml"; //filename will be a variable in the json file.
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
 		try{
@@ -299,8 +327,9 @@ function ClassData(thedata) {
 	}
 	var addthumbnail = this.addthumbnail = function(num) {
 		//needs to perform some checking because not all thumbnails exist.
-		var name = "virtualtourblankdata/graphics/virtualtourblank" + (num - 1) + "_thumbnail.jpg";
-		content = content + '<img class="thumbnail" src=\"' + name + '\">'; 
+		//var aname = "virtualtourblankdata/graphics/virtualtourblank" + (num - 1) + "_thumbnail.jpg";
+		var aname = name + "data/graphics/" + name + (num - 1) + "_thumbnail.jpg";
+		content = content + '<img class="thumbnail" src=\"' + aname + '\">'; 
 	}
 
 	var addview = this.addview = function(data, name) {

@@ -14,19 +14,19 @@
                     {
                         "label": "Definition",
                         "icon": "video",
-                        "id": "spot118",
+                        "id": "spot157",
                         "display_id": "A"
                     },
                     {
                         "label": "Identification",
                         "icon": "text",
-                        "id": "spot120",
+                        "id": "spot159",
                         "display_id": "B"
                     },
                     {
                         "label": "Meadow formation",
                         "icon": "video",
-                        "id": "spot120",
+                        "id": "spot158",
                         "display_id": "C"
                     }
                 ],
@@ -39,13 +39,13 @@
                     {
                         "label": "Disciplinary perspective",
                         "icon": "video",
-                        "id": "spot5",
+                        "id": "spot30",
                         "display_id": "A"
                     },
                     {
                         "label": "Questions",
                         "icon": "text",
-                        "id": "spot5",
+                        "id": "spot31",
                         "display_id": "B"
                     }
                 ],
@@ -58,19 +58,19 @@
                     {
                         "label": "Spatial scales",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot41",
                         "display_id": "A"
                     },
                     {
                         "label": "Geomorphic scale",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot42",
                         "display_id": "B"
                     },
                     {
                         "label": "Hydraulic scale",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot43",
                         "display_id": "C"
                     }
                 ],
@@ -83,19 +83,19 @@
                     {
                         "label": "Succession and food webs",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot52",
                         "display_id": "A"
                     },
                     {
                         "label": "Riparian succession",
                         "icon": "photo",
-                        "id": "spot8",
+                        "id": "spot54",
                         "display_id": "B"
                     },
                     {
                         "label": "Meadow dwellers",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot53",
                         "display_id": "C"
                     }
                 ],
@@ -108,13 +108,13 @@
                     {
                         "label": "5 principles",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot57",
                         "display_id": "A"
                     },
                     {
                         "label": "Past disturbances",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot58",
                         "display_id": "B"
                     }
                 ],
@@ -127,19 +127,19 @@
                     {
                         "label": "Pattern and process",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot167",
                         "display_id": "A"
                     },
                     {
                         "label": "Sediment supply",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot169",
                         "display_id": "B"
                     },
                     {
                         "label": "Glacial influence",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot168",
                         "display_id": "C"
                     }
                 ],
@@ -152,19 +152,19 @@
                     {
                         "label": "Drainage patterns and density",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot68",
                         "display_id": "A"
                     },
                     {
                         "label": "Basin Metrics",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot69",
                         "display_id": "B"
                     },
                     {
                         "label": "Tuolumne patterns",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot70",
                         "display_id": "C"
                     }
                 ],
@@ -177,13 +177,13 @@
                     {
                         "label": "Process zones",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot76",
                         "display_id": "A"
                     },
                     {
                         "label": "Sediment sources",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot77",
                         "display_id": "B"
                     }
                 ],
@@ -196,13 +196,13 @@
                     {
                         "label": "Dynamic equilibrium",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot80",
                         "display_id": "A"
                     },
                     {
                         "label": "Tuolumne river",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot81",
                         "display_id": "B"
                     }
                 ],
@@ -215,13 +215,13 @@
                     {
                         "label": "Spatial and temporal scales",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot84",
                         "display_id": "A"
                     },
                     {
                         "label": "Disturbance",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot85",
                         "display_id": "B"
                     }
                 ],
@@ -234,25 +234,25 @@
                     {
                         "label": "Natural flow regime",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot97",
                         "display_id": "A"
                     },
                     {
                         "label": "Tuolumne baseflow",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot99",
                         "display_id": "B"
                     },
                     {
                         "label": "Groundwater table",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot100",
                         "display_id": "C"
                     },
                     {
                         "label": "Meadow climate",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot98",
                         "display_id": "D"
                     }
                 ],
@@ -265,13 +265,13 @@
                     {
                         "label": "Production, supply, yield",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot108",
                         "display_id": "A"
                     },
                     {
                         "label": "Production zone",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot109",
                         "display_id": "B"
                     }
                 ],
@@ -284,14 +284,20 @@
                     {
                         "label": "Supply-capacity relationship",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot113",
                         "display_id": "A"
                     },
                     {
                         "label": "Tuolumne river",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot114",
                         "display_id": "B"
+                    },
+                    {
+                        "label": "Scroll patterns",
+                        "icon": "text",
+                        "id": "spot115",
+                        "display_id": "C"
                     }
                 ],
                 "description": ""
@@ -303,19 +309,19 @@
                     {
                         "label": "Channel types",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot127",
                         "display_id": "A"
                     },
                     {
                         "label": "Tuolumne channel type",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot128",
                         "display_id": "B"
                     },
                     {
                         "label": "Tributary inputs",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot129",
                         "display_id": "C"
                     }
                 ],
@@ -328,13 +334,13 @@
                     {
                         "label": "Reach types",
                         "icon": "video",
-                        "id": "spot8",
+                        "id": "spot150",
                         "display_id": "A"
                     },
                     {
                         "label": "Tuolumne reaches",
                         "icon": "text",
-                        "id": "spot8",
+                        "id": "spot151",
                         "display_id": "B"
                     }
                 ],
