@@ -22,9 +22,9 @@ $( document ).ready(function() {
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
-		//trying to load the very first one!!!
-		//loadPanoNum(classdata.getfirstlocation());
-		// showCurrentText();
+		//loading first pano
+		setTimeout(function(){loadPanoNum(classdata.getfirstlocation());},1000);
+		
 		credits(); //make this small and as a footer
 	}
 	if(urlinfo["debug"] == 1) {
@@ -46,9 +46,6 @@ function debug() {
 	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
-
-
-
 	
 }
 
