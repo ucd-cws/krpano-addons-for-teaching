@@ -22,8 +22,8 @@ $( document ).ready(function() {
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
-		//loading first pano
-		setTimeout(function(){loadPanoNum(classdata.getfirstlocation());},1000);
+		//loading first pano, needs to be delayed to let flash load
+		//setTimeout(function(){loadPanoNum(classdata.getfirstlocation());},1000);
 		
 		credits(); //make this small and as a footer
 	}
@@ -33,9 +33,33 @@ $( document ).ready(function() {
 		}
 		debug();
 	}
-	
+
 });
 
+function loadHSVideo1() {
+	krpano().call("closeallobjects();set(plugin[spot158object].visible,true);tween(plugin[spot158object].alpha, 1);stoppanosounds();plugin[spot158object].play();");
+}
+
+function loadHSText1() {
+	krpano().call("closeallobjects();set(plugin[spot159object].visible,true);tween(plugin[spot159object].alpha, 1);");
+}
+
+function loadAction(name, type) {
+	if(type == "video") {
+		loadHSVideo(name);
+	}
+	else if(type == "text") {
+		loadHSText(name);
+	}
+}
+
+function loadHSVideo(name) {
+	krpano().call("closeallobjects();set(plugin["+name +"object].visible,true);tween(plugin["+ name +"object].alpha, 1);stoppanosounds();plugin[" + name + "object].play();");
+}
+
+function loadHSText(name) {
+	krpano().call("closeallobjects();set(plugin[" + name + "object].visible,true);tween(plugin[" + name + "object].alpha, 1);");
+}
 
 
 //==============================START DEBUG CODE ==================================//
@@ -46,6 +70,8 @@ function debug() {
 	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"loadHSText();\">HIGUYS</a><br></div>');
+	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"loadHSVideo();\">BYEGUYS</a><br></div>');
 	
 }
 
@@ -111,6 +137,12 @@ function updatemousepos()
 } 
 
 //=============================END OF DEBUG CODE======================================//
+
+function createModalMessage() {
+	var temp = $('#container').append('<div id=\"modalmsg\"></div>');
+}
+
+
 
 // found code here, not sure why it completely works.
 // http://stackoverflow.com/questions/9114565/jquery-appending-a-div-to-body-the-body-is-the-object
@@ -329,9 +361,11 @@ function ClassData(thedata) {
 		content = content + '<img class="thumbnail" src=\"' + aname + '\">'; 
 	}
 
-	var addview = this.addview = function(data, name) {
+	var addview = this.addview = function(data, name, type) {
+		// content = content + '<a href=\"javascript:void(0);\"' +
+		// 							 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
 		content = content + '<a href=\"javascript:void(0);\"' +
-									 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
+									 'onclick=\"lookToHotspot(\'' + name +'\'); loadAction(\'' + name +'\',\'' + type +'\'); \">'+ data + '</a>';
 	}
 
 	var addicon = this.addicon = function(name) {
@@ -371,7 +405,7 @@ function ClassData(thedata) {
 			for(var j = 0; j < hotspots.length; j++) {
 				startli();
 				addview(hotspots[j].display_id + ". " + 
-						hotspots[j].label, hotspots[j].id);
+						hotspots[j].label, hotspots[j].id, hotspots[j].icon);
 				if(classdata.enable_icons) {
 					addicon(hotspots[j].icon);
 				}
