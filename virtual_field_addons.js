@@ -36,14 +36,7 @@ $( document ).ready(function() {
 
 });
 
-function loadHSVideo1() {
-	krpano().call("closeallobjects();set(plugin[spot158object].visible,true);tween(plugin[spot158object].alpha, 1);stoppanosounds();plugin[spot158object].play();");
-}
-
-function loadHSText1() {
-	krpano().call("closeallobjects();set(plugin[spot159object].visible,true);tween(plugin[spot159object].alpha, 1);");
-}
-
+//calls and loads either a video or text
 function loadAction(name, type) {
 	if(type == "video") {
 		loadHSVideo(name);
@@ -70,8 +63,7 @@ function debug() {
 	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"loadHSText();\">HIGUYS</a><br></div>');
-	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"loadHSVideo();\">BYEGUYS</a><br></div>');
+
 	
 }
 

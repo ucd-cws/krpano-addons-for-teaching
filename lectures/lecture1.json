@@ -88,7 +88,7 @@
                     },
                     {
                         "label": "Riparian succession",
-                        "icon": "photo",
+                        "icon": "text",
                         "id": "spot54",
                         "display_id": "B"
                     },
@@ -166,6 +166,12 @@
                         "icon": "text",
                         "id": "spot70",
                         "display_id": "C"
+                    },
+                    {
+                        "label": "Remnant channels",
+                        "icon": "text",
+                        "id": "spot70",
+                        "display_id": "D"
                     }
                 ],
                 "description": ""
