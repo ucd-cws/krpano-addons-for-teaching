@@ -202,7 +202,7 @@ function credits() {
 
 function getFileName() {
 	var myname = location.pathname;
-	myname = myname.replace('/', '');
+	myname = myname.replace(/.*\//g, '');
 	myname = myname.replace('.html', '');
 	return myname;
 }
@@ -253,21 +253,6 @@ function lookToHotspot(hotspotname) {
 }
 
 
-//uses the name of the file to determine the scene #
-//temporary hack that only works if the file contains its own scene number(integer)
-function getPanoID2() { 
-	var url;
-	try {
-		url = krpano().get("xml.url");
-		url = url.replace(/\D+/g, ''); //remove all non-digits
-	}
-	catch (e) {}//krpano has not finished loading yet
-
-    if(url) {
-		return parseInt(url) + 1;
-    }
-    return 1;
-}
 function getPanoID() { 
 	var url;
 	try {
