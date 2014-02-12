@@ -59,12 +59,18 @@ function loadHSText(name) {
 function debug() {
 	setupmousepos();
 	setInterval('updatemousepos()', 66);
+	setInterval('updatepanodisplay()', 66);
 
+	$( '#leftsidepanel' ).prepend('<div id=\"mypano\"></div>');
 	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
 
 	
+}
+
+function updatepanodisplay() {
+	$('#mypano').text("Currently on pano" + currentpanonum);
 }
 
 function getNextHotspot() {
@@ -338,11 +344,23 @@ function ClassData(thedata) {
 		content = content + '<img class="thumbnail" src=\"' + aname + '\">'; 
 	}
 
-	var addview = this.addview = function(data, name, type) {
-		// content = content + '<a href=\"javascript:void(0);\"' +
-		// 							 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
+	// var addview = this.addview = function(data, name, type) {
+	// 	// content = content + '<a href=\"javascript:void(0);\"' +
+	// 	// 							 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
+	// 	content = content + '<a href=\"javascript:void(0);\"' +
+	// 								 'onclick=\"lookToHotspot(\'' + name +'\'); loadAction(\'' + name +'\',\'' + type +'\'); \">'+ data + '</a>';
+	// }
+	var addview = this.addview = function(h, enable_icons) {
+		var vidtime = "";
+		if(h.video_duration && (h.video_duration).match(/^\d\d?:\d\d$/)) { //minutes:seconds
+			vidtime = " (" + h.video_duration + ")";
+		}
 		content = content + '<a href=\"javascript:void(0);\"' +
-									 'onclick=\"lookToHotspot(\'' + name +'\'); loadAction(\'' + name +'\',\'' + type +'\'); \">'+ data + '</a>';
+			'onclick=\"lookToHotspot(\'' + h.name +'\'); loadAction(\'' + h.id +'\',\'' + h.icon +'\'); \">'+ h.display_id + ". " + h.label + vidtime + '</a>';
+
+		if(enable_icons) {
+			addicon(h.icon);
+		}
 	}
 
 	var addicon = this.addicon = function(name) {
@@ -372,7 +390,7 @@ function ClassData(thedata) {
 	this.printAll = function() {
 		settitle( classdata.title );
 		addtitle( classdata.title );
-		addlectureicon(classdata.class_icon);
+		//addlectureicon(classdata.class_icon);
 		adddescription(classdata.description);
 		for(var i = 0; i < locations.length; i++) {
 			addspotname(locations[i].title, locations[i].pano_num);
@@ -381,11 +399,10 @@ function ClassData(thedata) {
 			startul();
 			for(var j = 0; j < hotspots.length; j++) {
 				startli();
-				addview(hotspots[j].display_id + ". " + 
-						hotspots[j].label, hotspots[j].id, hotspots[j].icon);
-				if(classdata.enable_icons) {
-					addicon(hotspots[j].icon);
-				}
+				// addview(hotspots[j].display_id + ". " + 
+				// 		hotspots[j].label, hotspots[j].id, hotspots[j].icon);
+				addview(hotspots[j], classdata.enable_icons);
+
 				endli();
 			}
 			endul();

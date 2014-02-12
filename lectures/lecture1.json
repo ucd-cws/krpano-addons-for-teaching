@@ -14,6 +14,7 @@
                     {
                         "label": "Definition",
                         "icon": "video",
+						"video_duration": "3:20",
                         "id": "spot157",
                         "display_id": "A"
                     },
@@ -26,6 +27,7 @@
                     {
                         "label": "Meadow formation",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot158",
                         "display_id": "C"
                     }
