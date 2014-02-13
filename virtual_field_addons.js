@@ -22,6 +22,8 @@ $( document ).ready(function() {
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
+		var headheight =  $("#header").height()
+		$("#content").css('top', headheight).css('height',$(window).height() - headheight);
 		//loading first pano, needs to be delayed to let flash load
 		//setTimeout(function(){loadPanoNum(classdata.getfirstlocation());},1000);
 		
@@ -202,7 +204,7 @@ function krpano() {
 
 function credits() {
 	//crediting to where we got the icons.
-	$('#leftsidepanel').append('<div id="credits"></div>');
+	$('#content').append('<div id="credits"></div>');
 	$('#credits').append('<a href=\"http://www.famfamfam.com/lab/icons/silk/\">Icons: Silk by FAMFAMFAM </a>')
 }
 
@@ -293,122 +295,94 @@ function loadPanoNum(num) {
 function ClassData(thedata) {
 	var classdata = this.classdata = thedata.VirtualClass;
 	var locations = this.locations = classdata.locations;
-	//var uses = 1; needed later on to prevent malicious intent?
 	var content = this.content = "";
 
-	var addcontent = this.addcontent = function() {
+	var setcontent = function() {
 		$( '#leftsidepanel' ).append(content);
 	}
 
-	var startdiv = this.startdiv = function() {
-		content = content + '<div>';
-	}
-	var enddiv = this.enddiv = function() {
-		content = content + '</div>';
-	}
-	var addtitle = this.addtitle = function(title) {
-		content = content + '<h1>'+ title +'</h1>';
+	var addheader = this.addheader = function(title,description) {
+		content = content + '<div id=\"header\"><h1>'+ title +'</h1><br>';
+		content = content + '<p id = \"introduction\">'+ description +'</p></div>';
 	}
 	var settitle = this.settitle = function(title) {
 		$('head > title').text(title);
 	}
-	var adddescription = this.adddescription = function(description) {
-		content = content + '<p id = \"introduction\">'+ description +'</p>';
-	}
-	//essentially a startdiv() with an id. needs an enddiv()
+
 	var addspotname = this.addpano = function(name, number) {
 		var pano = "pano" + number;
 		content = content + '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">';
-		starth2(number);
-
+		content = content + '<h2>';
 		content = content + '<a href=\"javascript:void(0);\"' + 
-			                'onclick=\"loadPanoNum(' + number +');\"><span class="hotspot_name">'+ name +'</span>';
+			                'onclick=\"loadPanoNum(' + number +
+			                ');\"><span class="hotspot_name">'+ name +'</span>';
 		if(classdata.enable_thumbnails)
 			addthumbnail(number);
 		content = content + '</a>';
-		endh2();
-	}
-	var starth2 = function(number) {
-		//if(classdata.enable_thumbnails)
-		//	content = content + '<h2 class="has_thumb" style="background-image:url(\'virtualtourblankdata/graphics/virtualtourblank' + (number - 1) + '_thumbnail.jpg\');background-size:100%;">';
-		//else
-			content = content + '<h2>';
-	}
-	var endh2 = function() {
 		content = content + '</h2>';
 	}
-	var addthumbnail = this.addthumbnail = function(num) {
+
+	var addthumbnail = function(num) {
 		//needs to perform some checking because not all thumbnails exist.
 		//var aname = "virtualtourblankdata/graphics/virtualtourblank" + (num - 1) + "_thumbnail.jpg";
 		var aname = name + "data/graphics/" + name + (num - 1) + "_thumbnail.jpg";
 		content = content + '<img class="thumbnail" src=\"' + aname + '\">'; 
 	}
 
-	// var addview = this.addview = function(data, name, type) {
-	// 	// content = content + '<a href=\"javascript:void(0);\"' +
-	// 	// 							 'onclick=\"lookToHotspot(\'' + name +'\');\">'+ data + '</a>';
-	// 	content = content + '<a href=\"javascript:void(0);\"' +
-	// 								 'onclick=\"lookToHotspot(\'' + name +'\'); loadAction(\'' + name +'\',\'' + type +'\'); \">'+ data + '</a>';
-	// }
-	var addview = this.addview = function(h, enable_icons) {
+	var addview = function(h, enable_icons) {
 		var vidtime = "";
 		if(h.video_duration && (h.video_duration).match(/^\d\d?:\d\d$/)) { //minutes:seconds
 			vidtime = " (" + h.video_duration + ")";
 		}
+		content = content + '<li class=\"hotspots\">';
 		content = content + '<a href=\"javascript:void(0);\"' +
-			'onclick=\"lookToHotspot(\'' + h.name +'\'); loadAction(\'' + h.id +'\',\'' + h.icon +'\'); \">'+ h.display_id + ". " + h.label + vidtime + '</a>';
+			'onclick=\"lookToHotspot(\'' + h.id +'\');' + 
+			'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); \">'+ 
+			h.display_id + ". " + h.label + vidtime + '</a>';
 
 		if(enable_icons) {
 			addicon(h.icon);
 		}
+		content = content + '</li>';
 	}
 
-	var addicon = this.addicon = function(name) {
+	var addicon = function(name) {
 		content = content + '<span class=\"icons ' + name + '\"></span>'; 
 	}
 
-	var addlectureicon = this.addlectureicon = function(name) {
-		//content = content + '<div class=\"lectures ' + name + '\"></div>';
+	var addlectureicon  = function(name) {
 		var location = "icons/" + name + ".png";
 		content = content + '<img class=\"lectureicon\" src=\"' + location  + '\">'
 	}
 
-	var startul = this.startul = function() {
-		content = content + '<ul class=\"hotspots\">';
+	var hotspots = function(places) {
+		for(var i = 0; i < places.length; i++) {
+
+			var hotspots = places[i].hotspots;
+			addspotname(places[i].title, places[i].pano_num);
+
+			content = content + '<ul class=\"hotspots\">';
+			for(var j = 0; j < hotspots.length; j++) {
+				addview(hotspots[j], classdata.enable_icons);
+			}
+			content = content + '</ul>';
+			content = content + '</div>';
+		}
 	}
-	var endul = this.endul = function() {
-		content = content + '</ul>';
-	}
-	var startli = this.startli = function() {
-		content = content + '<li class=\"hotspots\">';
-	}
-	var endli = this.endli = function() {
-		content = content + '</li>';
+
+	var addcontent = function() {
+		content += '<div id=\"content\">'
+		hotspots(locations);
+		content += '</div>';
 	}
 
 	//public function that will print the data onto the left panel
 	this.printAll = function() {
 		settitle( classdata.title );
-		addtitle( classdata.title );
-		//addlectureicon(classdata.class_icon);
-		adddescription(classdata.description);
-		for(var i = 0; i < locations.length; i++) {
-			addspotname(locations[i].title, locations[i].pano_num);
-			//adddescription(locations[i].description);
-			var hotspots = locations[i].hotspots;
-			startul();
-			for(var j = 0; j < hotspots.length; j++) {
-				startli();
-				// addview(hotspots[j].display_id + ". " + 
-				// 		hotspots[j].label, hotspots[j].id, hotspots[j].icon);
-				addview(hotspots[j], classdata.enable_icons);
-
-				endli();
-			}
-			endul();
-			enddiv();
-		}
+		addheader(classdata.title, classdata.description);
 		addcontent();
+		setcontent();
+
 	}
 
 	this.getfirstlocation = function() {
