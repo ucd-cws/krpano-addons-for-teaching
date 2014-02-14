@@ -16,19 +16,15 @@ $( document ).ready(function() {
 
 	if(response) {
 		createLeftSidePanel();
-		//enabling debugmode
-
 		var classdata = new ClassData(response);
 		classdata.printAll();
 	    hideAll();
 	    showAllHeaders();
 		var headheight =  $("#header").height()
-		$("#content").css('top', headheight).css('height',$(window).height() - headheight);
-		//loading first pano, needs to be delayed to let flash load
-		//setTimeout(function(){loadPanoNum(classdata.getfirstlocation());},1000);
 		
 		credits(); //make this small and as a footer
 	}
+	//enabling debugmode
 	if(urlinfo["debug"] == 1) {
 		if($('#leftsidepanel').length == 0) {
 			createLeftSidePanel();
@@ -49,11 +45,14 @@ function loadAction(name, type) {
 }
 
 function loadHSVideo(name) {
-	krpano().call("closeallobjects();set(plugin["+name +"object].visible,true);tween(plugin["+ name +"object].alpha, 1);stoppanosounds();plugin[" + name + "object].play();");
+	krpano().call("closeallobjects();set(plugin["+name +"object].visible,true);"+
+                   "tween(plugin["+ name +"object].alpha, 1);" + 
+                   "stoppanosounds();plugin[" + name + "object].play();");
 }
 
 function loadHSText(name) {
-	krpano().call("closeallobjects();set(plugin[" + name + "object].visible,true);tween(plugin[" + name + "object].alpha, 1);");
+	krpano().call("closeallobjects();set(plugin[" + name + "object].visible,true)"+
+                  ";tween(plugin[" + name + "object].alpha, 1);");
 }
 
 

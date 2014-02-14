@@ -1,10 +1,14 @@
 #leftsidepanel {
     height: 100%; 
     min-height: 100%; 
-    width: 18%; 
+    width: 20%; 
     margin: 0; 
     float:left;
 	font-family: Arial, Helvetica, sans-serif;
+}
+*{
+	margin: 0;
+	padding: 0;
 }
 
 #leftsidepanel + #container { 
@@ -29,11 +33,14 @@
 }
 
 #header {
+	max-height:25%;
 	height:auto;
-	width:18%;
-	position:fixed;
+	width:100%;
+	position:relative;
 	background-color:#b0c4de;
 	float:left;
+	clear: both;
+	overflow-y: hidden;
 }
 
 #leftsidepanel #header h1{
@@ -46,15 +53,12 @@
 }
 
 #content {
-	position:absolute;
+	max-height: 90%;
+	position:relative;
 	float: left;
-	overflow-y: auto;
-    /* overflow:auto; */
-	/* top: 180px; */
-	/* bottom: 0px; */
-	/* left: 0px; */
-	/* right: 0px; */
-	width:18%;
+	overflow-y: scroll;
+	width:100%;
+	z-index: 2;
 }
 
 #leftsidepanel div.pano_stop{
