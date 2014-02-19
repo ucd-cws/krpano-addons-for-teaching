@@ -53,7 +53,7 @@
 }
 
 #content {
-	max-height: 90%;
+	max-height: 82%;
 	position:relative;
 	float: left;
 	overflow-y: scroll;
@@ -168,25 +168,6 @@ span.icons.text {
 	float: right;
 	vertical-align: bottom;
 }
-
-/* .lectures { */
-/* 	background: url("icons/lectureicons.png"); */
-/* 	width: 100px; */
-/* 	height: 100px; */
-/* 	/\* float: left; *\/ */
-/* 	/\* position: relative; *\/ */
-/* } */
-
-/* .lectures.fish { */
-/* 	background-position: 0px 0px; */
-/* } */
-
-/* .lectures.grass { */
-/* 	background-position: 0px -178px; */
-/* } */
-/* .lectures.water { */
-/* 	background-position: 0px -358px; */
-/* } */
 
 ul {
 	list-style-type: none;
