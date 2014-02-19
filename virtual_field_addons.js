@@ -4,7 +4,8 @@ var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
-var name = "";
+var firstpano = -1;
+//var name = "";
 
 $( document ).ready(function() {
    
@@ -22,8 +23,7 @@ $( document ).ready(function() {
 	    showAllHeaders();
 		
 		credits(); //make this small and as a footer
-
-		
+		firstpano = classdata.getfirstlocation();		
 	}
 	//enabling debugmode
 	if(urlinfo["debug"] == 1) {
@@ -35,8 +35,15 @@ $( document ).ready(function() {
 	
 });
 
+function loadFirstPano() {
+	loadPanoNum(firstpano);
+}
+
 function scrollTo(num) {
-	$('#pano' + num).scrollTop();
+	 window.location.href="#pano" + num;
+    // $('body #content').animate({
+    //     scrollTop: $("#pano" + num).offset().top
+    // }, 1);
 }
 
 //calls and loads either a video or text
@@ -56,8 +63,8 @@ function loadHSVideo(name) {
 }
 
 function loadHSText(name) {
-	krpano().call("closeallobjects();set(plugin[" + name + "object].visible,true)"+
-                  ";tween(plugin[" + name + "object].alpha, 1);");
+	krpano().call("closeallobjects();set(plugin[" + name + "object].visible,true);"+
+                  "tween(plugin[" + name + "object].alpha, 1);");
 }
 
 
@@ -71,7 +78,6 @@ function debug() {
 	$( '#leftsidepanel' ).prepend('<form action=\"javascript:void(0);\" id=\"gotopageform\"><div id=\"gotopagetext\"> Go to Pano </div><div> <input type=\"text\" id=\"gotopagebox\"><input type=\"submit\" id=\"gotopagesubmit\" value=\"Go\"</div></form> <br><span id=\"responsedd\"></span><br>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"testThis();\">show number</a><br></div>');
 	$( '#leftsidepanel' ).prepend('<div><a href=\"javascript:void(0);\" onclick=\"getNextHotspot();\">Look at hotspot</a><br></div>');
-
 	
 }
 
@@ -182,7 +188,7 @@ function showCurrentText() {
 	unselectAll();
 	hideAll();
 	showAllHeaders();
-	$("#pano" + currentpanonum).addClass('selected').children().show();
+	$("#pano" + currentpanonum).addClass('selected').children().show(5,scrollTo(currentpanonum));
 }
 
 function unselectAll() {
@@ -222,7 +228,7 @@ function getFileName() {
 //jquery version
 function loadXMLFile()
 {
-	var theurl = name + (currentpanonum - 1) + ".xml";
+	var theurl = getFileName() + (currentpanonum - 1) + ".xml";
 	var jqueryxml = $.ajax({
 		type:"GET",
 		cache: false,
@@ -269,7 +275,7 @@ function getPanoID() {
 	var url;
 	try {
 		url = krpano().get("xml.url");
-		url = url.replace(name, ''); //remove the name
+		url = url.replace(getFileName(), ''); //remove the name
 		url = url.replace(".html", ''); //remove the .html
 	}
 	catch (e) {}//krpano has not finished loading yet
@@ -281,10 +287,9 @@ function getPanoID() {
 }
 
 function loadPanoNum(num) {
-	scrollTo(num);
     //defaults to zeroth pano or sets to specified pano number
 	if( firstpanonum <= num && num <= lastpanonum) { //this may not be necessary.
-		num = name + (num - 1) + ".xml"; //filename will be a variable in the json file.
+		num = getFileName() + (num - 1) + ".xml"; //filename will be a variable in the json file.
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
 		try{
@@ -330,7 +335,7 @@ function ClassData(thedata) {
 	var addthumbnail = function(num) {
 		//needs to perform some checking because not all thumbnails exist.
 		//var aname = "virtualtourblankdata/graphics/virtualtourblank" + (num - 1) + "_thumbnail.jpg";
-		var aname = name + "data/graphics/" + name + (num - 1) + "_thumbnail.jpg";
+		var aname = getFileName() + "data/graphics/" + getFileName() + (num - 1) + "_thumbnail.jpg";
 		content = content + '<img class="thumbnail" src=\"' + aname + '\">'; 
 	}
 
