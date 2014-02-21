@@ -1,32 +1,7 @@
-
-Possible errors/problems that might occur during the testing phase
-
--------------------------------------------------------------------------------
-uncaught exception: Error in Actionscript. Use a try/catch block to find error.
-
-   This will prevent any calls to the krpano object
-
-   This usually means that the "Always ask" has been checked. So please check "Always allow"
-   to stop the above error from happening.
---------------------------------------------------------------------------------
-krpano.set() is not a function  
-krpano.call() is not a function 
-
--------------------------------------------------------------------------------   
-
-QUESTIONS + TODO
-
-All hotspots will exist in the exported krpano?
-Will all hotspots be used in a lecture? (I would assume no.)
-After above answered, that means there will need to be some necessary hard-coding to get the positions right.
-Thus another file will be "required" that will setup the hotspot grouping so that we know which thing should go where.
-Toggle the visibility of the text? OR Remove and Add new text during scene change/hotspot change?
-
+Please read the Wiki for more instructions on how to use this addon.
 
 TODO
 
-2.  get pano number, hotspot number and label in "admin mode"
-    i.e. i'm in "admin mode", essentially the virtual tour but has power to mouse over a hotspot and get the info described above.
-    why? it helps with the labeling and setting up the lectures! ;)
-3. Turn off OpenStreetMap Layer on the Bing Maps. only keep cycle map. (Less of a priority)
-4. Be aware of the memory usage when a lot of people using the pano.
+1. Turn off OpenStreetMap Layer on the Bing Maps. only keep cycle map. (Less of a priority)
+2. Be aware of the memory usage when a lot of people using the pano.
+

@@ -4,8 +4,7 @@ var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
-var firstpano = -1;
-//var name = "";
+var firstpano = 1;
 
 $( document ).ready(function() {
    
@@ -142,8 +141,6 @@ function updatemousepos()
 			$('#fieldofview').text("fov = " + fov);
 		}
 	}
-
-	//display them immediately.
 } 
 
 //=============================END OF DEBUG CODE======================================//
@@ -151,7 +148,6 @@ function updatemousepos()
 function createModalMessage() {
 	var temp = $('#container').append('<div id=\"modalmsg\"></div>');
 }
-
 
 
 // found code here, not sure why it completely works.
