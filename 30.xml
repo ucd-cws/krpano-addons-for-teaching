@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- for xml compliance -->
+<krpano version="1.0.8.14">
+    <!-- actions to perform while loading -->
+    <events onxmlcomplete="onxmlcompleteaction();"/>
+    <action name="onxmlcompleteaction">
+		panotourmapsunactivespots();
+		if(autorotate.enabled==false,set(plugin[autorotationOFF].visible,false); set(plugin[autorotationON].visible,true);,set(plugin[autorotationOFF].visible,true); set(plugin[autorotationON].visible,false););
+		panotourmapsactivespot(panotourmapsspot0);
+	</action>
+    <events onloadcomplete="onloadcompleteaction();js(loadFirstPano());"/> <!--Added the js(loadFirstPano()) HERE by TWU-->
+    <action name="onloadcompleteaction">
+		if(plugin[data].soundOn==false,stoppanosounds(),playpanosounds());
+	</action>
+    <action name="playpanosounds">
+		playbackgroundsound(%BASEDIR%/3data/sounds/sound0.mp3,0,%1);
+	</action>
+    <action name="stoppanosounds">
+		stopbackgroundsound();
+	</action>
+    <action name="closepanoobjects">
+	</action>
+    <!--************** Panorama *******************************************************************-->
+    <!-- @File="30.xml" @PanoName="1" @FilePath="" -->
+    <panoview h="-76.07" v="0" fov="90"/>
+    <!-- view parameters -->
+    <view fisheye="0" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-90" vlookatmax="90" maxpixelzoom="1.0" fovmax="90" fov="90" hlookat="-76.07" vlookat="0"/>
+    <autorotate horizon="0" tofov="90" waittime="1" speed="5"/>
+    <!-- preview image -->
+    <preview url="3data/30/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" details="16"/>
+    <!-- the pano itself -->
+    <image type="CUBE" multires="true" tilesize="558" baseindex="0">
+        <level tiledimagewidth="4461" tiledimageheight="4461">
+            <left url="3data/30/3/3/%v_%u.jpg"/>
+            <front url="3data/30/0/3/%v_%u.jpg"/>
+            <right url="3data/30/1/3/%v_%u.jpg"/>
+            <back url="3data/30/2/3/%v_%u.jpg"/>
+            <up url="3data/30/4/3/%v_%u.jpg"/>
+            <down url="3data/30/5/3/%v_%u.jpg"/>
+        </level>
+        <level tiledimagewidth="2230" tiledimageheight="2230">
+            <left url="3data/30/3/2/%v_%u.jpg"/>
+            <front url="3data/30/0/2/%v_%u.jpg"/>
+            <right url="3data/30/1/2/%v_%u.jpg"/>
+            <back url="3data/30/2/2/%v_%u.jpg"/>
+            <up url="3data/30/4/2/%v_%u.jpg"/>
+            <down url="3data/30/5/2/%v_%u.jpg"/>
+        </level>
+        <level tiledimagewidth="1115" tiledimageheight="1115">
+            <left url="3data/30/3/1/%v_%u.jpg"/>
+            <front url="3data/30/0/1/%v_%u.jpg"/>
+            <right url="3data/30/1/1/%v_%u.jpg"/>
+            <back url="3data/30/2/1/%v_%u.jpg"/>
+            <up url="3data/30/4/1/%v_%u.jpg"/>
+            <down url="3data/30/5/1/%v_%u.jpg"/>
+        </level>
+        <level tiledimagewidth="557" tiledimageheight="557">
+            <left url="3data/30/3/0/%v_%u.jpg"/>
+            <front url="3data/30/0/0/%v_%u.jpg"/>
+            <right url="3data/30/1/0/%v_%u.jpg"/>
+            <back url="3data/30/2/0/%v_%u.jpg"/>
+            <up url="3data/30/4/0/%v_%u.jpg"/>
+            <down url="3data/30/5/0/%v_%u.jpg"/>
+        </level>
+    </image>
+    <!--************** Hotspots and lensflares ****************************************************-->
+    <hotspot name="spot0" hview="98.22" vview="0" fovview="90" hcenter="2.4342" vcenter="0.184726" onclick="looktohotspot(get(name),get(view.fovmin),smooth(400,20,100));mainloadpano(31.xml);lookat(get(hview),get(vview),get(fovview));" url="3data/graphics/spots/spot1.png" distorted="true" ath="2.44516" atv="0.195504" width="23" height="24" rx="24.1025" ry="5.14512" rz="-0.823133"/>
+    <action name="hidepanospotsaction">
+		set(hotspot[spot0].visible, false);
+	</action>
+    <action name="showpanospotsaction">
+		set(hotspot[spot0].visible, true);
+	</action>
+    <!-- close all hotspots -->
+</krpano>
