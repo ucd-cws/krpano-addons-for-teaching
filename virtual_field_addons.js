@@ -4,7 +4,6 @@ var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
-var firstpano = 1;
 var classdata;
 
 $( document ).ready(function() {
@@ -92,9 +91,39 @@ function getNextHotspot() {
 	if(count == hotspotlist.length - 1) count = 0;
 }
 
+//jquery version
+function loadXMLFile()  {
+	var theurl = getFileName() + (currentpanonum - 1) + ".xml";
+	var jqueryxml = $.ajax({
+		type:"GET",
+		cache: false,
+		url: theurl,
+		dataType: "xml",
+		async:false,
+	});
+
+	var xmlDoc = jqueryxml.responseXML;
+	hotspotlist = new Array();
+	//set first value as pano num needed to check for later.
+	//get a list of all the tags labeled "hotspot"
+	//TODO: need a try and catch here to prevent odd crashes.
+	var templist = xmlDoc.getElementsByTagName("hotspot");
+	for(var i = 0; i < templist.length; i++) {
+		hotspotlist[i] = templist[i].getAttribute("name");
+	}
+	hotspotlist[templist.length] = currentpanonum;
+
+}
+
 function testThis() {
     //alert(currentpanonum);
 	classdata.getNext();
+}
+
+function nextButton() {
+}
+
+function prevButton() {
 }
 
 //generates all of the links to all of the panos
@@ -142,11 +171,6 @@ function updatemousepos()
 } 
 
 //=============================END OF DEBUG CODE======================================//
-
-function createModalMessage() {
-	var temp = $('#container').append('<div id=\"modalmsg\"></div>');
-}
-
 
 
 // http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
@@ -213,30 +237,6 @@ function getFileName() {
 	return myname;
 }
 
-//jquery version
-function loadXMLFile()
-{
-	var theurl = getFileName() + (currentpanonum - 1) + ".xml";
-	var jqueryxml = $.ajax({
-		type:"GET",
-		cache: false,
-		url: theurl,
-		dataType: "xml",
-		async:false,
-	});
-
-	var xmlDoc = jqueryxml.responseXML;
-	hotspotlist = new Array();
-	//set first value as pano num needed to check for later.
-	//get a list of all the tags labeled "hotspot"
-	//TODO: need a try and catch here to prevent odd crashes.
-	var templist = xmlDoc.getElementsByTagName("hotspot");
-	for(var i = 0; i < templist.length; i++) {
-		hotspotlist[i] = templist[i].getAttribute("name");
-	}
-	hotspotlist[templist.length] = currentpanonum;
-
-}
 
 function loadJSONFile(got) {
     var filename = got["lecture"];
@@ -345,17 +345,15 @@ function ClassData(thedata) {
 	}
 
 	var panostops = function(places) {
-		for(var i = 0; i < places.length; i++) {
-			//var pano_num = 15; //places[i].pano_num;
-			var fun2 = function(){loadPanoNum(places[i].pano_num)}
+			var fun2 = function(){loadPanoNum(places.pano_num)}
 			tempCallNext.push(fun2);
 
-			var pano = "pano" + places[i].pano_num;
+			var pano = "pano" + places.pano_num;
 			content += '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">';
 			content += '<h2>';
 			content += '<a href=\"javascript:void(0);\"' + 
-			    'onclick=\"loadPanoNum(' + places[i].pano_num + ');\">' +
-			    '<span class="hotspot_name">'+ places[i].title +'</span>';
+			    'onclick=\"loadPanoNum(' + places.pano_num + ');\">' +
+			    '<span class="hotspot_name">'+ places.title +'</span>';
 			
 			// if(classdata.enable_thumbnails)
 			// 	addthumbnail(places[i].pano_num);
@@ -365,18 +363,19 @@ function ClassData(thedata) {
 
 			content += '<ul class=\"hotspots\">';
 
-			var hotspots = places[i].hotspots;
+			var hotspots = places.hotspots;
 			for(var j = 0; j < hotspots.length; j++) {
 				addhotspot(hotspots[j], classdata.enable_icons);
 			}
 			content += '</ul>';
 			content += '</div>';
-		}
 	}
 
 	var addcontent = function() {
 		content += '<div id=\"content\">'
-		panostops(locations);
+		for(var i = 0; i < locations.length; i++) {
+			panostops(locations[i]);
+		}
 		content += '</div>';
 	}
 
@@ -400,10 +399,8 @@ function ClassData(thedata) {
 		return(locations[0].pano_num);
 	}
 
-	this.getNext = function() {
-		
-		if(hasNext()) {
-			
+	this.getNext = function() {		
+		if(hasNext()) {			
 			position++;
 			tempCallNext[position]();
 		}
@@ -416,7 +413,7 @@ function ClassData(thedata) {
 	}
 
 	var hasNext = this.hasNext = function() {
-		return position < tempCallNext.length;
+		return position < tempCallNext.length - 1;
 	}
  
     var hasPrev = this.hasPrev = function() {
