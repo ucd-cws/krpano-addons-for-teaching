@@ -5,13 +5,14 @@ var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
 var classdata;
+var nextallowed = true; //prevents problems with prev/next button
 
 $( document ).ready(function() {
    
 	var urlinfo = getUrlVars();
 	var response = loadJSONFile(urlinfo);
 	//file has been found and loaded
-
+	
 	if(response) {
 		//createLeftSidePanel();
 		classdata = new ClassData(response);
@@ -26,10 +27,15 @@ $( document ).ready(function() {
 	if(urlinfo["debug"] == 1) {
 		debug();
 	}
+	
+	setInterval('checkPanoNum()',15);
+	
 });
 
 function loadFirstPano() {
-	loadPanoNum(classdata.getfirstlocation());
+	loadPanoNum(classdata.getFirstLocation());
+	nextallowed = true;
+	setInterval('setcallback()',15);
 }
 
 function scrollTo(num) {
@@ -76,6 +82,19 @@ function debug() {
 	
 }
 
+function setcallback() {
+	if(krpano()) {
+		krpano().set("events.onloadcomplete","js(enableNext());");
+	}
+}
+
+function enableNext() {
+	nextallowed = true;
+}
+function disableNext() {
+	nextallowed = false;
+}
+
 function updatepanodisplay() {
 	$('#mypano').text("Currently on pano" + currentpanonum);
 }
@@ -117,13 +136,21 @@ function loadXMLFile()  {
 
 function testThis() {
     //alert(currentpanonum);
-	classdata.getNext();
+	if(nextallowed) {
+		classdata.getNext();
+	}
 }
 
 function nextButton() {
+	if(nextallowed) {
+		classdata.getNext();
+	}
 }
 
 function prevButton() {
+	if(nextallowed) {
+		classdata.getPrevious();
+	}
 }
 
 //generates all of the links to all of the panos
@@ -173,26 +200,7 @@ function updatemousepos()
 //=============================END OF DEBUG CODE======================================//
 
 
-// http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
-function getUrlVars() {
-	var $_GET = {};
-	document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
-		function decode(s) {
-			return decodeURIComponent(s.split("+").join(" "));
-		}
-		$_GET[decode(arguments[1])] = decode(arguments[2]);
-	});
-	return $_GET;
-}
 
-//constantly checks current panonumber and updates it
-var checkpanonum = setInterval(function() {
-	var newpanoid = getPanoID();
-	if(newpanoid != currentpanonum) {
-		currentpanonum = newpanoid;
-		showCurrentText();
-	}
-}, 15);
 
 //========================TEXT VISUAL MANIPULATION=======================
 
@@ -224,6 +232,35 @@ function krpano() {
     return document.getElementById('krpanoSWFObject');
 }
 
+// http://stackoverflow.com/questions/439463/how-to-get-get-and-post-variables-with-jquery
+function getUrlVars() {
+	var $_GET = {};
+	document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+		function decode(s) {
+			return decodeURIComponent(s.split("+").join(" "));
+		}
+		$_GET[decode(arguments[1])] = decode(arguments[2]);
+	});
+	return $_GET;
+}
+
+//constantly checks current panonumber and updates it
+// var checkpanonum = setInterval(function() {
+// 	var newpanoid = getPanoID();
+// 	if(newpanoid != currentpanonum) {
+// 		currentpanonum = newpanoid;
+// 		showCurrentText();
+// 	}
+// }, 15);
+
+function checkPanoNum() {
+	var newpanoid = getPanoID();
+	if(newpanoid != currentpanonum) {
+		currentpanonum = newpanoid;
+		showCurrentText();
+	}
+}
+
 function credits() {
 	//crediting to where we got the icons.
 	$('#content').append('<div id="credits"></div>');
@@ -231,10 +268,11 @@ function credits() {
 }
 
 function getFileName() {
-	var myname = location.pathname;
-	myname = myname.replace(/.*\//g, '');
-	myname = myname.replace('.html', '');
-	return myname;
+	// var myname = location.pathname;
+	// myname = myname.replace(/.*\//g, '');
+	// myname = myname.replace('.html', '');
+	// return myname;
+	return classdata.getFileName();
 }
 
 
@@ -275,19 +313,25 @@ function getPanoID() {
 }
 
 function loadPanoNum(num) {
+	disableNext();
     //defaults to zeroth pano or sets to specified pano number
-	if( firstpanonum <= num && num <= lastpanonum) { //this may not be necessary.
+	//if( firstpanonum <= num && num <= lastpanonum) { //this may not be necessary.
 		num = getFileName() + (num - 1) + ".xml"; //filename will be a variable in the json file.
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
 		try{
+			
 			krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
 		}
-		catch(e){console.log("couldn't load pano number " + num);}
+		catch(e){console.log("Couldn't load pano number " + num);}
 
-		return true;
-    }
-	return false;
+	//	return true;
+    //}
+	//return false;
+}
+
+function updateIndex(id) {
+	classdata.updateIndex(id);
 }
 
 function ClassData(thedata) {
@@ -295,7 +339,8 @@ function ClassData(thedata) {
 	var locations = classdata.locations;
 	var content = "";
 	var tempCallNext = [];
-	var position = 0;
+	var idToIndex = {};
+	var index = 0;
 
 	var applycontent = function() {
 		$( '#leftsidepanel' ).append(content);
@@ -303,8 +348,14 @@ function ClassData(thedata) {
 
 	var addheader = function(title,description) {
 		content += '<div id=\"header\"><h1>'+ title +'</h1><br>';
-		content += '<p id = \"introduction\">'+ description + '</p></div>';
+		content += '<p id = \"introduction\">'+ description + '</p>'; 
+		content += '<a href=\"javascript:void(0);\"' +
+			       'onclick=\"prevButton();\"\>Previous</a>';
+		content += '<a href=\"javascript:void(0);\"' +
+			       'onclick=\"nextButton();\"\>Next</a>';
+		content += '</div>';
 	}
+
 	var settitle = function(title) {
 		$('head > title').text(title);
 	}
@@ -316,6 +367,7 @@ function ClassData(thedata) {
 	// }
 
 	var addhotspot = function(h, enable_icons) {
+		idToIndex[h.id] = tempCallNext.length;
 		var fun = function(){lookToHotspot(h.id);loadAction(h.id,h.icon);}
 		tempCallNext.push(fun);
 
@@ -326,7 +378,8 @@ function ClassData(thedata) {
 		content += '<li class=\"hotspots\">';
 		content += '<a href=\"javascript:void(0);\"' +
 			'onclick=\"lookToHotspot(\'' + h.id +'\');' + 
-			'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); \">'+ 
+			'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); ' + 
+			'updateIndex(\"' + h.id + '\");' + '\">'+ 
 			h.display_id + ". " + h.label + vidtime + '</a>';
 
 		if(enable_icons) {
@@ -345,14 +398,17 @@ function ClassData(thedata) {
 	}
 
 	var panostops = function(places) {
+		    var pano = "pano" + places.pano_num;
+
+		    idToIndex[pano] = tempCallNext.length;
 			var fun2 = function(){loadPanoNum(places.pano_num)}
 			tempCallNext.push(fun2);
-
-			var pano = "pano" + places.pano_num;
+			
 			content += '<div id=\"' + pano + '\"' + 'class=\"pano_stop\">';
 			content += '<h2>';
 			content += '<a href=\"javascript:void(0);\"' + 
-			    'onclick=\"loadPanoNum(' + places.pano_num + ');\">' +
+			    'onclick=\"loadPanoNum(' + places.pano_num + ');' +
+			    'updateIndex(' + '\'' +  pano + '\'' + ');' + '\">' +
 			    '<span class="hotspot_name">'+ places.title +'</span>';
 			
 			// if(classdata.enable_thumbnails)
@@ -395,29 +451,39 @@ function ClassData(thedata) {
 		applycontent();
 	}
 
-	this.getfirstlocation = function() {
+	this.getFirstLocation = function() {
 		return(locations[0].pano_num);
+	}
+
+	this.getFileName = function() {
+		return classdata.base_name;
 	}
 
 	this.getNext = function() {		
 		if(hasNext()) {			
-			position++;
-			tempCallNext[position]();
+			index++;
+			tempCallNext[index]();
 		}
 	}
 	this.getPrevious = function() {
 		if(hasPrev()) {
-			position--;
-			tempCallNext[position]();
+			index--;
+			tempCallNext[index]();
 		}
 	}
 
 	var hasNext = this.hasNext = function() {
-		return position < tempCallNext.length - 1;
+		return index < tempCallNext.length - 1;
 	}
  
     var hasPrev = this.hasPrev = function() {
-		return position > 0;
+		return index > 0;
+	}
+
+	this.updateIndex = function(id) {
+		index = idToIndex[id];
+		//alert(index);
 	}
 }
 
+//NOTE going backwards still requires you to load the previous thing before going back.... THINK about this...
