@@ -18,8 +18,8 @@ $( document ).ready(function() {
 		classdata = new ClassData(response);
 		classdata.initialize();
 		
-	    hideAll();
-	    showAllHeaders();
+	    // hideAll();
+	    // showAllHeaders();
 		credits(); 
 		
 	}
