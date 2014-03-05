@@ -373,14 +373,14 @@ function ClassData(thedata) {
 
 		var vidtime = "";
 		if(h.video_duration && (h.video_duration).match(/^\d\d?:\d\d$/)) { //minutes:seconds
-			vidtime = " (" + h.video_duration + ")";
+			//vidtime = " (" + h.video_duration + ")";
 		}
 		content += '<li class=\"hotspots\">';
-		content += '<a href=\"javascript:void(0);\"' +
-			'onclick=\"lookToHotspot(\'' + h.id +'\');' + 
-			'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); ' + 
-			'updateIndex(\"' + h.id + '\");' + '\">'+ 
-			h.display_id + ". " + h.label + vidtime + '</a>';
+		// content += '<a href=\"javascript:void(0);\"' +
+		// 	'onclick=\"lookToHotspot(\'' + h.id +'\');' + 
+		// 	'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); ' + 
+		// 	'updateIndex(\"' + h.id + '\");' + '\">'+ 
+		// 	h.display_id + ". " + h.label + vidtime + '</a>';
 
 		if(enable_icons) {
 			addicon(h.icon);
@@ -456,6 +456,9 @@ function ClassData(thedata) {
 	}
 
 	this.getFileName = function() {
+		if(!classdata.base_name) {
+			alert("Filename not specified");
+		}
 		return classdata.base_name;
 	}
 
