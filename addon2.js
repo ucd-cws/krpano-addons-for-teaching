@@ -4,7 +4,6 @@ var firstpanonum = 1; //even if it starts at 0 put 1.
 var lastpanonum = 53; //even if it ends at 52 put 53
 var currentpanonum = -1; //starts with pano 1
 var hotspotlist = new Array();
-var nextallowed = true; //prevents problems with prev/next button
 var currentindex = 0;
 var thehotspots;
 
@@ -38,11 +37,10 @@ function krpano() {
 
 function load(index) {
 	currentindex = index;
-	thehotspots[index].load();
+	thehotspots[currentindex].load();
 }
 
 function loadPanoNum(num) {
-//	disableNext();  //prevents race conditions and locks up the next button until pano has finished loading.
 	num = getBaseName() + (num - 1) + ".xml"; 
 	
 	try{     //scene_num + 1 = actual scene numbering based on the .xml file naming		
@@ -51,9 +49,8 @@ function loadPanoNum(num) {
 	catch(e){console.log("Couldn't load pano number " + num);}
 }
 
-function lookToHotspot(hotspotid) {
-	alert(typeof hotspotid);
-	krpano().call("looktohotspot(" + hotspotid + ");");
+function lookToHotspot(hotspot) {
+	krpano().call("looktohotspot(" + hotspot + ");");
 }
 
 function checkPanoNum() {
@@ -80,11 +77,48 @@ function getPanoID() {
 }
 
 function loadFirstPano() {
-	//thehotspots[0].load();
-	nextallowed = true;
-	//setInterval('setcallback()',15);
+	thehotspots[0].load();
+	setcallback();
 }
 
+function enableNext() {
+	$('#nextClick').on("click", function(event) {
+		disableNext();
+		nextButton();
+	});
+
+	$('#prevClick').on("click", function(event) {
+		disableNext();
+		prevButton();
+	});
+}
+
+function disableNext() {
+	$('#nextClick').off();
+	$('#prevClick').off();
+}
+
+function nextButton() {
+	if(currentindex < thehotspots.length) {
+		currentindex++;
+		thehotspots[currentindex].load();
+		setcallback();
+	}
+}
+
+function prevButton() {
+	if(currentindex > 0) {
+		currentindex--;
+		thehotspots[currentindex].load();
+		setcallback();
+	}
+}
+
+function setcallback() {
+	if(krpano()) {
+		krpano().set("events.onloadcomplete","js(enableNext());");
+	}
+}
 
 function scrollTo(num) {
 	window.location.href="#pano" + num;
@@ -122,7 +156,7 @@ function getUrlVars() {
 }
 
 function updateIndex(id) {
-	classdata.updateIndex(id);
+	//classdata.updateIndex(id);
 	//currentindex = id;
 }
 
@@ -156,7 +190,7 @@ function showAllHeaders() {
 function Pano(panonum, basename) {
  	this.panonum = panonum;
 	this.basename = basename;
-	this.loadpano = function(num) {
+	this.loadPano = function(num) {
 		num = this.basename + (num - 1) + ".xml"; //filename == base_name in json file.
 		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
@@ -165,17 +199,17 @@ function Pano(panonum, basename) {
 		}
 		catch(e){console.log("Couldn't load pano number " + num);}
 	}
-	this.isCurrentPano = function() {
-		return this.panonum == this.currentpanonum; //currentpanonum is global
+	this.correctPano = function() {
+		return this.panonum == currentpanonum; //currentpanonum is global
 	}
-	this.checkCurrent = function() {
-		if(!this.isCurrentPano()) {
-			this.loadpano(this.panonum);
-			return ;
-		}
+
+	this.setCurrentIndex = function() {
+		currentindex = thehotspots.indexOf(this);
 	}
+
 	this.load = function() {
-		this.loadpano(this.panonum);
+		this.loadPano(this.panonum);
+		this.setCurrentIndex();
 	}
 	this.getPanoNum = function() {
 		return this.panonum;
@@ -197,14 +231,21 @@ function Hotspot(panonum,hotspotid) {
 //who inherits from who
 Hotspot.prototype = new Pano();
 Video.prototype = new Hotspot();
-Video.constructor = Video;
+//Set video's constructor to video
+// by default, inheritance sets video's constructor to Hotspot's
+Video.constructor = Video; 
 Text.prototype = new Hotspot();
 Text.constructor = Text;
 
 function Video(panonum, hotspotid) {
 	Hotspot.call(this, panonum, hotspotid);
     this.load = function() {
-		this.checkCurrent();
+		if(!this.correctPano()) {
+			this.loadPano(this.panonum); 
+			this.setCurrentIndex();
+			return ;
+		}
+		
 		lookToHotspot(this.hotspotid);
 		krpano().call("closeallobjects();set(plugin["+ this.hotspotid +"object].visible,true);" +
 					  "tween(plugin["+ this.hotspotid +"object].alpha, 1);" + 
@@ -214,7 +255,12 @@ function Video(panonum, hotspotid) {
 function Text(panonum, hotspotid) {
 	Hotspot.call(this, panonum, hotspotid);
 	this.load = function() {
-		this.checkCurrent()
+		if(!this.correctPano()) {
+			this.loadPano(this.panonum);
+			this.setCurrentIndex();
+			return; 
+		}
+
 		lookToHotspot(this.hotspotid);
 		krpano().call("closeallobjects();set(plugin[" + this.hotspotid + "object].visible,true);"+
 					  "tween(plugin[" + this.hotspotid + "object].alpha, 1);");
@@ -230,12 +276,15 @@ function ClassData(thedata) {
 	var pano_num;
 
 	var addheader = function(title,description) {
+		description = "";
 		content += '<div id=\"header\"><h1>'+ title +'</h1><br>';
 		content += '<p id = \"introduction\">'+ description + '</p>'; 
-		content += '<a href=\"javascript:void(0);\"' +
-			'onclick=\"prevButton();\"\>Previous</a>';
-		content += '<a href=\"javascript:void(0);\"' +
-			'onclick=\"nextButton();\"\>Next</a>';
+		content += '<a id="prevClick"\>Previous</a>';
+		content += '<a id="nextClick"\>Next</a>';
+		// content += '<a id="prevClick" href=\"javascript:void(0);\"' +
+		// 	'onclick=\"prevButton();\"\>Previous</a>';
+		// content += '<a id="nextClick" href=\"javascript:void(0);\"' +
+		// 	'onclick=\"nextButton();\"\>Next</a>';
 		content += '</div>';
 	}
 
@@ -259,7 +308,7 @@ function ClassData(thedata) {
 			
 		}
 		else if(h.icon == "text") {
-			ahotspot = new Text(pano_num, h.id );
+			ahotspot = new Text(pano_num, h.id);
 		}
 		else {
 			alert("Icon type unknown. Failed to set up hotspots.");
@@ -268,11 +317,11 @@ function ClassData(thedata) {
 		myhotspots.push(ahotspot);
 		content += '<li class=\"hotspots\">';
 		content += '<a href=\"javascript:void(0);\"' +
-			'onclick=\"load(' + indexnum +');\">' + 
+			'onclick=\"load(' + indexnum + ');\">' + 
 			h.display_id + ". " + h.label + vidtime + '</a>';
 
 		if(enable_icons) { //add icon
-			content += '<span class=\"icons ' + name + '\"></span>'; 
+			content += '<span class=\"icons ' + h.icon + '\"></span>'; 
 		}
 		content += '</li>';
 	}
