@@ -365,7 +365,9 @@ function ClassData(thedata) {
 	// 	var aname = getFileName() + "data/graphics/" + getFileName() + (num - 1) + "_thumbnail.jpg";
 	// 	content += '<img class="thumbnail" src=\"' + aname + '\">'; 
 	// }
-
+	var quotes = function(string) {
+		return "'" + string + "'";
+	}
 	var addhotspot = function(h, enable_icons) {
 		idToIndex[h.id] = tempCallNext.length;
 		var fun = function(){lookToHotspot(h.id);loadAction(h.id,h.icon);}
@@ -373,14 +375,15 @@ function ClassData(thedata) {
 
 		var vidtime = "";
 		if(h.video_duration && (h.video_duration).match(/^\d\d?:\d\d$/)) { //minutes:seconds
-			vidtime = " (" + h.video_duration + ")";
+			//vidtime = " (" + h.video_duration + ")";
 		}
 		content += '<li class=\"hotspots\">';
-		content += '<a href=\"javascript:void(0);\"' +
-			'onclick=\"lookToHotspot(\'' + h.id +'\');' + 
-			'loadAction(\'' + h.id +'\',\'' + h.icon + '\'); ' + 
-			'updateIndex(\"' + h.id + '\");' + '\">'+ 
+		content += '<a href=\"javascript:void(0);\" ' +
+			'onclick=\"lookToHotspot(' + quotes(h.id) +');' + 
+			'loadAction(' + quotes(h.id) + ',' + quotes(h.icon) + ');' + 
+			'updateIndex(' + quotes(h.id) + ');' + '\">'+ 
 			h.display_id + ". " + h.label + vidtime + '</a>';
+
 
 		if(enable_icons) {
 			addicon(h.icon);
@@ -456,6 +459,9 @@ function ClassData(thedata) {
 	}
 
 	this.getFileName = function() {
+		if(!classdata.base_name) {
+			alert("Filename not specified");
+		}
 		return classdata.base_name;
 	}
 

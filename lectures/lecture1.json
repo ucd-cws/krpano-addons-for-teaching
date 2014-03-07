@@ -7,6 +7,7 @@
 		"base_name" : "3",
 		"enable_thumbnails" : false,
 		"enable_icons" : true,
+		"base_name" : "3",
         "locations": [
             {
                 "title": "What is a Watershed?",
@@ -42,6 +43,7 @@
                     {
                         "label": "Disciplinary perspective",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot30",
                         "display_id": "A"
                     },
@@ -61,6 +63,7 @@
                     {
                         "label": "Spatial scales",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot41",
                         "display_id": "A"
                     },
@@ -86,6 +89,7 @@
                     {
                         "label": "Succession and food webs",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot52",
                         "display_id": "A"
                     },
@@ -98,6 +102,7 @@
                     {
                         "label": "Meadow dwellers",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot53",
                         "display_id": "C"
                     }
@@ -111,6 +116,7 @@
                     {
                         "label": "5 principles",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot57",
                         "display_id": "A"
                     },
@@ -130,6 +136,7 @@
                     {
                         "label": "Pattern and process",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot167",
                         "display_id": "A"
                     },
@@ -142,6 +149,7 @@
                     {
                         "label": "Glacial influence",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot168",
                         "display_id": "C"
                     }
@@ -155,12 +163,14 @@
                     {
                         "label": "Drainage patterns and density",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot68",
                         "display_id": "A"
                     },
                     {
                         "label": "Basin Metrics",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot69",
                         "display_id": "B"
                     },
@@ -186,6 +196,7 @@
                     {
                         "label": "Process zones",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot76",
                         "display_id": "A"
                     },
@@ -205,6 +216,7 @@
                     {
                         "label": "Dynamic equilibrium",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot80",
                         "display_id": "A"
                     },
@@ -224,6 +236,7 @@
                     {
                         "label": "Spatial and temporal scales",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot84",
                         "display_id": "A"
                     },
@@ -243,6 +256,7 @@
                     {
                         "label": "Natural flow regime",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot97",
                         "display_id": "A"
                     },
@@ -261,6 +275,7 @@
                     {
                         "label": "Meadow climate",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot98",
                         "display_id": "D"
                     }
@@ -274,6 +289,7 @@
                     {
                         "label": "Production, supply, yield",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot108",
                         "display_id": "A"
                     },
@@ -293,6 +309,7 @@
                     {
                         "label": "Supply-capacity relationship",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot113",
                         "display_id": "A"
                     },
@@ -318,6 +335,7 @@
                     {
                         "label": "Channel types",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot127",
                         "display_id": "A"
                     },
@@ -343,6 +361,7 @@
                     {
                         "label": "Reach types",
                         "icon": "video",
+						"video_duration": "2:22",
                         "id": "spot150",
                         "display_id": "A"
                     },
