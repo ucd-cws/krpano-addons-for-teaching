@@ -1,9 +1,4 @@
-var count = 0;
-//probably will go back to hard coding these values??
-var firstpanonum = 1; //even if it starts at 0 put 1.
-var lastpanonum = 53; //even if it ends at 52 put 53
-var currentpanonum = -1; //starts with pano 1
-var hotspotlist = new Array();
+var currentpanonum = -1; 
 var currentindex = 0;
 var thehotspots;
 
@@ -14,22 +9,36 @@ $( document ).ready(function() {
 	//file has been found and loaded
 	
 	if(response) {
-		//createLeftSidePanel();
 		var classdata = new ClassData(response);
 		classdata.initialize();
 		thehotspots = classdata.getHotSpots();
 	    hideAll();
-	    showAllHeaders();
-		
+	    showAllHeaders();		
 	}
-	//enabling debugmode
-	if(urlinfo["debug"] == 1) {
-		debug();
-	}
-	setInterval('checkPanoNum()',15);
+
+	window.setTimeout(buttonSetUp(),5000);
 
 });
 
+function buttonSetUp() {
+	$('#nextClick').click(function() {
+		var btn = $(this);
+		btn.prop('disabled',true);
+		nextButton();
+		window.setTimeout(function() {
+			btn.prop('disabled', false);
+		}, 2000);
+	});
+
+	$('#prevClick').click(function() {
+		var btn = $(this);
+		btn.prop('disabled',true);
+		prevButton();
+		window.setTimeout(function() {
+			btn.prop('disabled', false);
+		}, 2000);
+	});
+}
 
 function krpano() {
     return document.getElementById('krpanoSWFObject');
@@ -78,31 +87,13 @@ function getPanoID() {
 
 function loadFirstPano() {
 	thehotspots[0].load();
-	setcallback();
-}
-
-function enableNext() {
-	$('#nextClick').on("click", function(event) {
-		disableNext();
-		nextButton();
-	});
-
-	$('#prevClick').on("click", function(event) {
-		disableNext();
-		prevButton();
-	});
-}
-
-function disableNext() {
-	$('#nextClick').off();
-	$('#prevClick').off();
 }
 
 function nextButton() {
 	if(currentindex < thehotspots.length) {
 		currentindex++;
 		thehotspots[currentindex].load();
-		setcallback();
+		
 	}
 }
 
@@ -110,13 +101,13 @@ function prevButton() {
 	if(currentindex > 0) {
 		currentindex--;
 		thehotspots[currentindex].load();
-		setcallback();
+		
 	}
 }
 
 function setcallback() {
 	if(krpano()) {
-		krpano().set("events.onloadcomplete","js(enableNext());");
+		krpano().set("events.onloadcomplete","onloadcompleteaction(); js(enableNext());");
 	}
 }
 
@@ -153,6 +144,23 @@ function getUrlVars() {
 		$_GET[decode(arguments[1])] = decode(arguments[2]);
 	});
 	return $_GET;
+}
+
+function hideHotSpot(hotspotid) {
+	krpano().call("set(hotspot["+ hotspotid +"].visible, false);");
+}
+
+function showHotSpot(hotspotid) {
+	krpano().call("set(hotspot["+ hotspotid +"].visible, true);");
+}
+
+function showMyHotspots() {
+	// var i;
+	// for(i = currentindex; i < thehotspots.length; i++) {
+	// 	if(thehotspots[i] instanceof Pano) {
+	// 		break;
+	// 	}
+	// }
 }
 
 function updateIndex(id) {
@@ -203,6 +211,10 @@ function Pano(panonum, basename) {
 		return this.panonum == currentpanonum; //currentpanonum is global
 	}
 
+	this.setCurrentPano = function() {
+		currentpanonum = this.panonum;
+	}
+
 	this.setCurrentIndex = function() {
 		currentindex = thehotspots.indexOf(this);
 	}
@@ -210,12 +222,22 @@ function Pano(panonum, basename) {
 	this.load = function() {
 		this.loadPano(this.panonum);
 		this.setCurrentIndex();
+		this.setCurrentPano();
+		this.hideAllHotspots();
+		showMyHotspots();
+		showCurrentText();
 	}
 	this.getPanoNum = function() {
 		return this.panonum;
 	}
 	this.getBaseName = function() {
 		return this.basename;
+	}
+	this.hideAllHotspots = function() {
+		try {
+			krpano().call("hidepanospotsaction();")
+		}
+		catch(e) {console.log("Failed to hide all hotspots");}
 	}
  }
 
@@ -243,6 +265,7 @@ function Video(panonum, hotspotid) {
 		if(!this.correctPano()) {
 			this.loadPano(this.panonum); 
 			this.setCurrentIndex();
+			this.setCurrentPano();
 			return ;
 		}
 		
@@ -258,6 +281,7 @@ function Text(panonum, hotspotid) {
 		if(!this.correctPano()) {
 			this.loadPano(this.panonum);
 			this.setCurrentIndex();
+			this.setCurrentPano();
 			return; 
 		}
 
@@ -278,9 +302,9 @@ function ClassData(thedata) {
 	var addheader = function(title,description) {
 		description = "";
 		content += '<div id=\"header\"><h1>'+ title +'</h1><br>';
-		content += '<p id = \"introduction\">'+ description + '</p>'; 
-		content += '<a id="prevClick"\>Previous</a>';
-		content += '<a id="nextClick"\>Next</a>';
+		//content += '<p id = \"introduction\">'+ description + '</p>'; 
+		content += '<button id="prevClick"\>Previous</button>';
+		content += '<button id="nextClick"\>Next</button>';
 		// content += '<a id="prevClick" href=\"javascript:void(0);\"' +
 		// 	'onclick=\"prevButton();\"\>Previous</a>';
 		// content += '<a id="nextClick" href=\"javascript:void(0);\"' +
