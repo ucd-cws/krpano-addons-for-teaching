@@ -40,7 +40,7 @@
 }
 
 #header {
-	max-height:30%;
+	max-height:22%;
 	height:15%;
 	width:100%;
 	position:relative;
@@ -60,7 +60,7 @@
 }
 
 #content {
-	max-height: 85%;
+	max-height: 78%;
 	position:relative;
 	float: left;
 	overflow-y: scroll;
