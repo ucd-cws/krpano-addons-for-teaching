@@ -41,7 +41,7 @@
 
 #header {
 	max-height:30%;
-	height:15%;
+	height:22%;
 	width:100%;
 	position:relative;
 	background-color:#b0c4de;
@@ -60,7 +60,7 @@
 }
 
 #content {
-	max-height: 85%;
+	max-height: 78%;
 	position:relative;
 	float: left;
 	overflow-y: scroll;
@@ -199,4 +199,14 @@ ul {
 #responsedd {
 	font-size: 18px;
 	background-color: red;
+}
+
+#prevClick {
+	float: left;
+	margin: 0 1em;
+}
+
+#nextClick {
+	float: right;
+	margin: 0 1em;
 }
