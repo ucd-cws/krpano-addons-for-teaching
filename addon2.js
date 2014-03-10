@@ -309,9 +309,9 @@ function ClassData(thedata) {
 	var pano_num;
 
 	var addheader = function(title,description) {
-		description = "";
+		//description = "";
 		content += '<div id=\"header\"><h1>'+ title +'</h1><br>';
-		//content += '<p id = \"introduction\">'+ description + '</p>'; 
+		content += '<p id = \"introduction\">'+ description + '</p>'; 
 		content += '<button id="prevClick"\>Previous</button>';
 		content += '<button id="nextClick"\>Next</button>';
 		// content += '<a id="prevClick" href=\"javascript:void(0);\"' +
