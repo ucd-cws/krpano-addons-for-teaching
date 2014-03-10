@@ -20,6 +20,7 @@ $( document ).ready(function() {
 
 });
 
+//once clicked, button is disabled for 2 seconds.
 function buttonSetUp() {
 	$('#nextClick').click(function() {
 		var btn = $(this);
@@ -27,7 +28,7 @@ function buttonSetUp() {
 		nextButton();
 		window.setTimeout(function() {
 			btn.prop('disabled', false);
-		}, 2000);
+		}, 1200);
 	});
 
 	$('#prevClick').click(function() {
@@ -36,7 +37,7 @@ function buttonSetUp() {
 		prevButton();
 		window.setTimeout(function() {
 			btn.prop('disabled', false);
-		}, 2000);
+		}, 1200);
 	});
 }
 
@@ -92,16 +93,20 @@ function loadFirstPano() {
 function nextButton() {
 	if(currentindex < thehotspots.length) {
 		currentindex++;
-		thehotspots[currentindex].load();
-		
+		if(!thehotspots[currentindex].load()){		
+			currentindex--;
+			showCurrentText();
+		}
 	}
 }
 
 function prevButton() {
 	if(currentindex > 0) {
 		currentindex--;
-		thehotspots[currentindex].load();
-		
+		if(!thehotspots[currentindex].load()) {
+			currentindex++;
+			showCurrentText();
+		}
 	}
 }
 
@@ -198,9 +203,8 @@ function showAllHeaders() {
 function Pano(panonum, basename) {
  	this.panonum = panonum;
 	this.basename = basename;
-	this.loadPano = function(num) {
+	this.loadPano = function(num) {		
 		num = this.basename + (num - 1) + ".xml"; //filename == base_name in json file.
-		
         //scene_num + 1 = actual scene numbering based on the .xml file naming
 		try{			
 			krpano().call("loadpano('" + num + "',null,MERGE,BLEND(1));");
@@ -215,7 +219,7 @@ function Pano(panonum, basename) {
 		currentpanonum = this.panonum;
 	}
 
-	this.setCurrentIndex = function() {
+	this.setCurrentIndex = function(index) {
 		currentindex = thehotspots.indexOf(this);
 	}
 
@@ -226,6 +230,7 @@ function Pano(panonum, basename) {
 		this.hideAllHotspots();
 		showMyHotspots();
 		showCurrentText();
+		return true;
 	}
 	this.getPanoNum = function() {
 		return this.panonum;
@@ -241,9 +246,10 @@ function Pano(panonum, basename) {
 	}
  }
 
-function Hotspot(panonum,hotspotid) {
+function Hotspot(panonum, hotspotid, basename) {
 	this.panonum = panonum;
 	this.hotspotid = hotspotid;
+	this.basename = basename;
 
 	this.getHotSpotId = function() {
 		return this.hotspotid;
@@ -259,35 +265,38 @@ Video.constructor = Video;
 Text.prototype = new Hotspot();
 Text.constructor = Text;
 
-function Video(panonum, hotspotid) {
-	Hotspot.call(this, panonum, hotspotid);
+function Video(panonum, hotspotid, basename) {
+	Hotspot.call(this, panonum, hotspotid,basename);
     this.load = function() {
 		if(!this.correctPano()) {
 			this.loadPano(this.panonum); 
 			this.setCurrentIndex();
 			this.setCurrentPano();
-			return ;
+			return false;
 		}
 		
 		lookToHotspot(this.hotspotid);
 		krpano().call("closeallobjects();set(plugin["+ this.hotspotid +"object].visible,true);" +
 					  "tween(plugin["+ this.hotspotid +"object].alpha, 1);" + 
 					  "stoppanosounds();plugin[" + this.hotspotid + "object].play();");
+
+		return true;
 	}
 }
-function Text(panonum, hotspotid) {
-	Hotspot.call(this, panonum, hotspotid);
+function Text(panonum, hotspotid, basename) {
+	Hotspot.call(this, panonum, hotspotid, basename);
 	this.load = function() {
 		if(!this.correctPano()) {
 			this.loadPano(this.panonum);
 			this.setCurrentIndex();
 			this.setCurrentPano();
-			return; 
+			return false; 
 		}
 
 		lookToHotspot(this.hotspotid);
 		krpano().call("closeallobjects();set(plugin[" + this.hotspotid + "object].visible,true);"+
 					  "tween(plugin[" + this.hotspotid + "object].alpha, 1);");
+		return true;
 	}
 }
 
@@ -324,7 +333,7 @@ function ClassData(thedata) {
 		if(h.icon == "video" && pano_num) {
 			if(h.video_duration && (h.video_duration).match(/^\d\d?:\d\d$/)) { //minutes:seconds
 				vidtime = " (" + h.video_duration + ")";
-				ahotspot = new Video(pano_num, h.id);
+				ahotspot = new Video(pano_num, h.id, classdata.base_name);
 			}
 			else {
 				alert("Video Duration must be in mm:ss");
@@ -332,7 +341,7 @@ function ClassData(thedata) {
 			
 		}
 		else if(h.icon == "text") {
-			ahotspot = new Text(pano_num, h.id);
+			ahotspot = new Text(pano_num, h.id, classdata.base_name);
 		}
 		else {
 			alert("Icon type unknown. Failed to set up hotspots.");
