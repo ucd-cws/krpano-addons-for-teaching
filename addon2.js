@@ -14,31 +14,22 @@ $( document ).ready(function() {
 		thehotspots = classdata.getHotSpots();
 	    hideAll();
 	    showAllHeaders();		
+		window.setTimeout(buttonSetUp(),5000);
+		playIntro();
 	}
 
-	window.setTimeout(buttonSetUp(),5000);
 
 });
 
-//once clicked, button is disabled for 2 seconds.
-function buttonSetUp() {
-	$('#nextClick').click(function() {
-		var btn = $(this);
-		btn.prop('disabled',true);
-		nextButton();
-		window.setTimeout(function() {
-			btn.prop('disabled', false);
-		}, 1200);
-	});
-
-	$('#prevClick').click(function() {
-		var btn = $(this);
-		btn.prop('disabled',true);
-		prevButton();
-		window.setTimeout(function() {
-			btn.prop('disabled', false);
-		}, 1200);
-	});
+function playIntro() {
+	$('#header').attr("data-intro","HEY HEY HEY!!").attr("data-step","1");
+	$('#introduction').attr("data-intro","HEY intro!!").attr("data-step","2");
+	$('#prevClick').attr("data-intro","HEY prevClick!!").attr("data-step","3");
+	$('#nextClick').attr("data-intro","HEY nextClick!!").attr("data-step","4");
+	$('.hotspot_name').first().attr("data-intro","here's the first pano name, click me!!").attr("data-step","5");
+	$('.hotspots').children().first().attr("data-intro","opens text or video!!").attr("data-step","6");
+	$('#panoDIV').attr("data-intro","I see a virtual tour").attr("data-step","7").attr("data-position", "left");
+	introJs().start();
 }
 
 function krpano() {
@@ -90,6 +81,27 @@ function loadFirstPano() {
 	thehotspots[0].load();
 }
 
+//once clicked, button is disabled for 1.2 seconds.
+function buttonSetUp() {
+	$('#nextClick').click(function() {
+		var btn = $(this);
+		btn.prop('disabled',true);
+		nextButton();
+		window.setTimeout(function() {
+			btn.prop('disabled', false);
+		}, 1200);
+	});
+
+	$('#prevClick').click(function() {
+		var btn = $(this);
+		btn.prop('disabled',true);
+		prevButton();
+		window.setTimeout(function() {
+			btn.prop('disabled', false);
+		}, 1200);
+	});
+}
+
 function nextButton() {
 	if(currentindex < thehotspots.length) {
 		currentindex++;
@@ -110,11 +122,11 @@ function prevButton() {
 	}
 }
 
-function setcallback() {
-	if(krpano()) {
-		krpano().set("events.onloadcomplete","onloadcompleteaction(); js(enableNext());");
-	}
-}
+// function setcallback() {
+// 	if(krpano()) {
+// 		krpano().set("events.onloadcomplete","onloadcompleteaction(); js(enableNext());");
+// 	}
+// }
 
 function scrollTo(num) {
 	window.location.href="#pano" + num;
@@ -158,7 +170,7 @@ function hideHotSpot(hotspotid) {
 function showHotSpot(hotspotid) {
 	krpano().call("set(hotspot["+ hotspotid +"].visible, true);");
 }
-
+//shows hotspots that are specified in the lecture.
 function showMyHotspots() {
 	// var i;
 	// for(i = currentindex; i < thehotspots.length; i++) {
@@ -168,10 +180,6 @@ function showMyHotspots() {
 	// }
 }
 
-function updateIndex(id) {
-	//classdata.updateIndex(id);
-	//currentindex = id;
-}
 
 //========================TEXT VISUAL MANIPULATION=======================
 
@@ -227,7 +235,7 @@ function Pano(panonum, basename) {
 		this.loadPano(this.panonum);
 		this.setCurrentIndex();
 		this.setCurrentPano();
-		this.hideAllHotspots();
+		//this.hideAllHotspots();
 		showMyHotspots();
 		showCurrentText();
 		return true;
@@ -314,10 +322,6 @@ function ClassData(thedata) {
 		content += '<p id = \"introduction\">'+ description + '</p>'; 
 		content += '<button id="prevClick"\>Previous</button>';
 		content += '<button id="nextClick"\>Next</button>';
-		// content += '<a id="prevClick" href=\"javascript:void(0);\"' +
-		// 	'onclick=\"prevButton();\"\>Previous</a>';
-		// content += '<a id="nextClick" href=\"javascript:void(0);\"' +
-		// 	'onclick=\"nextButton();\"\>Next</a>';
 		content += '</div>';
 	}
 
