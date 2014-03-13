@@ -3,5 +3,19 @@ Please read the Wiki for more instructions on how to use this addon.
 TODO
 
 1. Turn off OpenStreetMap Layer on the Bing Maps. only keep cycle map. (Less of a priority)
-2. Be aware of the memory usage when a lot of people using the pano.
+2. Be aware of the memory usage when a lot of people are using the pano.
+
+
+NOTES
+
+Individual hotspot names are located in their respective .xml files. They generally have this form 
+
+    <hotspot name="spot0" hview="98.22" vview="0" fovview="90" hcenter="2.4342" vcenter="0.184726" onclick="looktohotspot(get(name),get(view.fovmin),smooth(400,20,100));mainloadpano(31.xml);lookat(get(hview),get(vview),get(fovview));" url="3data/graphics/spots/spot1.png" distorted="true" ath="2.44516" atv="0.195504" width="23" height="24" rx="24.1025" ry="5.14512" rz="-0.823133"/>
+
+Here we can see that the hotspot's name is "spot0" thus spot0 will be recorded into the .json files for the lecture under hotspots > id .
+
+Each pano number is obtained by looking at the name of each .xml files. 
+For example: if the base name of your files were 3, then 30.xml would be pano number 0. However, the only file that is not actually a pano is 3.xml since this is the .xml file that performs all the pano set ups and then loads the zeroth pano, pano 0. 
+
+The pano number should be recorded under pano_num in the .json file. 
 
