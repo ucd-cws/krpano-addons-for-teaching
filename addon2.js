@@ -22,10 +22,10 @@ $( document ).ready(function() {
 });
 
 function playIntro() {
-	$('#header').attr("data-intro","HEY HEY HEY!!").attr("data-step","1");
-	$('#introduction').attr("data-intro","HEY intro!!").attr("data-step","2");
-	$('#prevClick').attr("data-intro","HEY prevClick!!").attr("data-step","3");
-	$('#nextClick').attr("data-intro","HEY nextClick!!").attr("data-step","4");
+	$('#header').attr("data-intro","HEY HEY HEY!!").attr("data-step","1").attr("data-position", "right");;
+	$('#introduction').attr("data-intro","HEY intro!!").attr("data-step","2").attr("data-position", "right");;
+	$('#prevClick').attr("data-intro","HEY prevClick!!").attr("data-step","3").attr("data-position", "right");;
+	$('#nextClick').attr("data-intro","HEY nextClick!!").attr("data-step","4").attr("data-position", "right");;
 	$('.hotspot_name').first().attr("data-intro","here's the first pano name, click me!!").attr("data-step","5");
 	$('.hotspots').children().first().attr("data-intro","opens text or video!!").attr("data-step","6");
 	$('#panoDIV').attr("data-intro","I see a virtual tour").attr("data-step","7").attr("data-position", "left");
@@ -39,6 +39,9 @@ function krpano() {
 function load(index) {
 	currentindex = index;
 	thehotspots[currentindex].load();
+	showCurrentText();
+	hideAllHotspots();
+	showMyHotspots();
 }
 
 function loadPanoNum(num) {
@@ -78,7 +81,7 @@ function getPanoID() {
 }
 
 function loadFirstPano() {
-	thehotspots[0].load();
+	load(0);
 }
 
 //once clicked, button is disabled for 1.2 seconds.
@@ -92,10 +95,10 @@ function buttonSetUp() {
 		}, 1200);
 	});
 
-	$('#prevClick').click(function() {
+	$('#backClick').click(function() {
 		var btn = $(this);
 		btn.prop('disabled',true);
-		prevButton();
+		backButton();
 		window.setTimeout(function() {
 			btn.prop('disabled', false);
 		}, 1200);
@@ -104,29 +107,29 @@ function buttonSetUp() {
 
 function nextButton() {
 	if(currentindex < thehotspots.length) {
-		currentindex++;
-		if(!thehotspots[currentindex].load()){		
-			currentindex--;
-			showCurrentText();
-		}
+		//currentindex++;
+		// if(!thehotspots[currentindex].load()){		
+		// 	currentindex--;
+		// 	showCurrentText();
+		// }
+		load(currentindex + 1);
 	}
 }
 
-function prevButton() {
+function backButton() {
 	if(currentindex > 0) {
 		currentindex--;
+		//PanoA, AH,1 AH2, ..., AHN, PanoB, BH,1 BH2, ..., BHN, PanoC ..
+		// prevents going from BH1 to PanoB and goes directly to AHN instead
+		if(!thehotspots[currentindex] instanceof Hotspot) {
+			currentindex--;
+		}
 		if(!thehotspots[currentindex].load()) {
 			currentindex++;
 			showCurrentText();
 		}
 	}
 }
-
-// function setcallback() {
-// 	if(krpano()) {
-// 		krpano().set("events.onloadcomplete","onloadcompleteaction(); js(enableNext());");
-// 	}
-// }
 
 function scrollTo(num) {
 	window.location.href="#pano" + num;
@@ -163,21 +166,33 @@ function getUrlVars() {
 	return $_GET;
 }
 
-function hideHotSpot(hotspotid) {
+function hideHotspot(hotspotid) {
 	krpano().call("set(hotspot["+ hotspotid +"].visible, false);");
 }
 
-function showHotSpot(hotspotid) {
+function hideAllHotspots() {
+	try {
+		krpano().call("hidepanospotsaction();")
+	}
+	catch(e) {console.log("Failed to hide all hotspots");}
+}
+
+function showHotspot(hotspotid) {
 	krpano().call("set(hotspot["+ hotspotid +"].visible, true);");
 }
 //shows hotspots that are specified in the lecture.
 function showMyHotspots() {
-	// var i;
-	// for(i = currentindex; i < thehotspots.length; i++) {
-	// 	if(thehotspots[i] instanceof Pano) {
-	// 		break;
-	// 	}
-	// }
+	var i;
+	for(i = 0; i < thehotspots.length; i++) {
+		if(thehotspots[i].correctPano()) {
+			break;
+		}
+	}
+	for(;thehotspots[i].correctPano() && i < thehotspots.length; i++) {
+		if(thehotspots[i] instanceof Hotspot)
+			showHotspot(thehotspots[i].getHotSpotId());
+	}
+	
 }
 
 
@@ -236,8 +251,6 @@ function Pano(panonum, basename) {
 		this.setCurrentIndex();
 		this.setCurrentPano();
 		//this.hideAllHotspots();
-		showMyHotspots();
-		showCurrentText();
 		return true;
 	}
 	this.getPanoNum = function() {
@@ -320,7 +333,7 @@ function ClassData(thedata) {
 		//description = "";
 		content += '<div id=\"header\"><h1>'+ title +'</h1><br>';
 		content += '<p id = \"introduction\">'+ description + '</p>'; 
-		content += '<button id="prevClick"\>Previous</button>';
+		content += '<button id="backClick"\>Back</button>';
 		content += '<button id="nextClick"\>Next</button>';
 		content += '</div>';
 	}

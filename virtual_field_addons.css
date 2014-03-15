@@ -201,12 +201,20 @@ ul {
 	background-color: red;
 }
 
-#prevClick {
+#backClick {
+	font-size: 20px;
+	font-weight: bold;
 	float: left;
-	margin: 0 1em;
+	margin: 0 0.5em;
+	height: 35px;
+	width: 90px;
 }
 
 #nextClick {
+	font-size: 20px;
+	font-weight: bold;
 	float: right;
-	margin: 0 1em;
+	margin: 0 0.5em;
+	height: 35px;
+	width: 90px;
 }
